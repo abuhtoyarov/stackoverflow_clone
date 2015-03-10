@@ -1,0 +1,15 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: stackoverflow_clone_development
+  pool: 5
+  username: stackoverflow_clone
+  password: password1
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: stackoverflow_clone_test
+  pool: 5
+  username: stackoverflow_clone
+  password: password1
