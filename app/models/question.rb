@@ -1,4 +1,5 @@
 class Question < ActiveRecord::Base
+  has_many :answers
   attr_accessor :title, :body
 
   validates :title, presence: true, length: { in: 15..255 }
