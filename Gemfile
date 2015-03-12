@@ -31,6 +31,9 @@ group :test, :development do
   gem 'factory_girl_rails'
 end
 
+# Rspec helper. See https://github.com/thoughtbot/shoulda-matchers
+gem 'shoulda-matchers', group: :test
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
