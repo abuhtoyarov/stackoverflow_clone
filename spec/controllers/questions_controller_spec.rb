@@ -26,25 +26,26 @@ RSpec.describe QuestionsController, type: :controller do
   
   describe 'POST #create' do
     # Passing factory girls attributes_for
+    # this attributes must be in question: hash for strong params
     context 'with valid attributes' do
       it 'saves the new question to database' do
-        expect(post :create, attributes_for(:question)).
+        expect{post :create, question: attributes_for(:question)}.
           to change(Question, :count).by(1)
       end
       it 'redirect to question#show' do
-        post :create, attributes_for(:question)
+        post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns(:question))
       end
     end
     context 'with invalid attributes' do
 
       it 'dont saves new question to database' do
-        expect(post :create, attributes_for(:invalid_question)).
+        expect{post :create, question: attributes_for(:invalid_question)}.
           to_not change(Question, :count)
       end
       it 'redirect to question#new' do
-        post :create, attributes_for(:invalid_question)
-        expect(response).to redirect_to :new
+        post :create, question: attributes_for(:invalid_question)
+        expect(response).to render_template :new
       end
     end
   end
