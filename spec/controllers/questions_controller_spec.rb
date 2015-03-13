@@ -1,10 +1,18 @@
 require 'rails_helper'
 
-RSpec.describe QuestionsController, type: :controller do
-  
+RSpec.describe QuestionsController, type: :controller do  
+  #Can call 'question' method to assigns :question
+  let(:question) { create(:question) }
+
   describe 'GET #show' do
-    it 'assigns the requested question to @question'
-    it 'renders :show template'
+    it 'assigns the requested question to @question' do
+      get :show, id: question
+      expect(assigns(:question)).to eq question
+    end
+    it 'renders :show template' do
+      get :show, id: question
+      expect(response).to render_template :show
+    end
   end
 
   describe 'GET #new' do
