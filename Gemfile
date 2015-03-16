@@ -7,6 +7,8 @@ gem 'rails', '4.1.6'
 gem 'pg'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
+# Use HAML for templates
+gem 'haml-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
@@ -31,8 +33,12 @@ group :test, :development do
   gem 'factory_girl_rails'
 end
 
-# Rspec helper. See https://github.com/thoughtbot/shoulda-matchers
-gem 'shoulda-matchers', group: :test
+group :test do
+  # Rspec helper. See https://github.com/thoughtbot/shoulda-matchers
+  gem 'shoulda-matchers'
+  # Generate data for factory girls
+  gem 'faker'
+end
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
