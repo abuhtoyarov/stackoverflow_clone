@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
-  let(:answer) { create(:answer) }
+  let(:answer) { create(:answer, question: question) }
 
   describe 'POST #create' do
     context 'with valid attributes' do
@@ -28,13 +28,17 @@ RSpec.describe AnswersController, type: :controller do
             post :create, 
               answer: attributes_for(:invalid_answer), 
               question_id: question 
-          }.to_not change(question.answers, :count)
+          }.to_not change(Answer, :count)
       end
       it 'redirect_to question #show' do
         post :create, 
           answer: attributes_for(:invalid_answer), 
           question_id: question
-        expect(response).to redirect_to(question)
+        expect(response).
+          to redirect_to controller: 'questions', 
+          action: 'show', 
+          id: assigns(:question).id, 
+          answer: attributes_for(:invalid_answer)
       end
     end
   end

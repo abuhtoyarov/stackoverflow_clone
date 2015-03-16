@@ -2,6 +2,8 @@ class QuestionsController < ApplicationController
   before_action :find_question, only: :show
 
   def show
+    @answer = Answer.new
+    @answers = @question.answers
   end
 
   def new
