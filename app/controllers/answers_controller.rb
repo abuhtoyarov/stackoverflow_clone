@@ -6,10 +6,9 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question
     else
-      redirect_to controller: 'questions', 
-        action: 'show', 
-        id: @question.id,
-        answer: answer_params
+      #render DONT execute any code in the action so we need to assign @answers
+      @answers = Question.find(params[:question_id]).answers
+      render 'questions/show'
     end
   end
 

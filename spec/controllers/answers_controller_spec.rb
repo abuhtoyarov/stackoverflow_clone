@@ -30,15 +30,17 @@ RSpec.describe AnswersController, type: :controller do
               question_id: question 
           }.to_not change(Answer, :count)
       end
-      it 'redirect_to question #show' do
+      it 'render question #show' do
         post :create, 
           answer: attributes_for(:invalid_answer), 
           question_id: question
-        expect(response).
-          to redirect_to controller: 'questions', 
-          action: 'show', 
-          id: assigns(:question).id, 
-          answer: attributes_for(:invalid_answer)
+        expect(response).to render_template 'questions/show'
+      end
+      it 'populates an array of answers' do
+        post :create, 
+          answer: attributes_for(:invalid_answer), 
+          question_id: question
+        expect(assigns(:answers)).to match_array [answer]
       end
     end
   end
