@@ -9,7 +9,7 @@ class AnswersController < ApplicationController
       redirect_to controller: 'questions', 
         action: 'show', 
         id: @question.id,
-        answer: { body: @answer.body }
+        answer: answer_params
     end
   end
 
