@@ -38,6 +38,8 @@ group :test do
   gem 'shoulda-matchers'
   # Generate data for factory girls
   gem 'faker'
+  gem 'capybara'
+  gem 'launchy'
 end
 
 # Use ActiveModel has_secure_password
