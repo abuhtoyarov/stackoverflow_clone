@@ -17,3 +17,5 @@
 
 # Database config
 /config/database.yml
+
+.idea/

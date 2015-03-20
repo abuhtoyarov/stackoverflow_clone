@@ -6,6 +6,8 @@ feature 'User can browse question with its answers', %w{
     I can browse question page
   } do
 
-    scenario 'User open question link'
+    scenario 'User open question with answers'
+    scenario 'User open question without answers'
+    
   
 end
