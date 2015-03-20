@@ -5,6 +5,16 @@ RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
   let(:answer) { create(:answer, question: question) }
 
+  describe 'GET #index' do
+    before {get :index}
+    it 'populates an array of questions' do
+      expect(assigns(:questions)).to match_array [question]
+    end
+    it 'renders :index template' do
+      expect(response).to render_template :index
+    end
+  end
+
   describe 'GET #show' do
     before { get :show, id: question }
     it 'assigns the requested question to @question' do
