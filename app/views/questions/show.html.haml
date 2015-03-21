@@ -1,0 +1,7 @@
+%h2=@question.title
+%p=@question.body
+-unless @answers.count == 0
+  -@answers.each do |answer|
+    %p=answer.body
+-else
+  %p Know an answer? Please post it

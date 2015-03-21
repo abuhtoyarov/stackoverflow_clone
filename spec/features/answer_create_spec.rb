@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature 'User can answer to a question', %w{
+feature 'User can answer to a question', %q{
   In order to help another person
   as a User
   I want be able to create answer
