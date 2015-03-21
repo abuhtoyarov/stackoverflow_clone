@@ -6,14 +6,19 @@ feature 'User can create question', %q{
     I want be able ask question
   } do
     given(:question) {create(:question)}
-    scenario 'User try create question with valid data' do
+    before :each do
       visit '/questions'
       click_on  'Ask question'
+    end
+    scenario 'User try create question with valid data' do
       fill_in 'Title', with: question.title
       fill_in 'Body', with: question.body
       click_on 'Create'
-
       expect(page).to have_content 'Your question successfully created'
     end
-    scenario 'User try create question with invalid data'
+
+    scenario 'User try create question with invalid data' do
+      click_on 'Create'
+      expect(page).to have_content "Your question couldn't be submitted. Please see the errors:"
+    end
 end
