@@ -5,3 +5,13 @@
     %p=answer.body
 -else
   %p Know an answer? Please post it
+
+-if @answer.errors.any?
+  %p Your answer couldn't be submitted. Please see the errors:
+  %ul
+    - @answer.errors.full_messages.each do |msg|
+      %li= msg
+=form_for [@question, @answer] do |form|
+  =form.label :body
+  =form.text_area :body
+  =form.button 'Post Your Answer'

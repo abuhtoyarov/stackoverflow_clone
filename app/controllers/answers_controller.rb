@@ -4,6 +4,7 @@ class AnswersController < ApplicationController
     @question = Question.find(params[:question_id])
     @answer = @question.answers.create(answer_params)
     if @answer.save
+      flash[:notice] = 'Your answer successfully created'
       redirect_to @question
     else
       #render DONT execute any code in the action so we need to assign @answers
