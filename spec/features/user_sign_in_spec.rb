@@ -5,7 +5,21 @@ feature 'User can sign in', %q{
   as an user
   I want to be able to sign in
   } do
-    scenario 'Existing user try to sign in'
-    scenario 'Unexistign user try to sign in'
+
+    given(:user) {create(:user)}
+
+    scenario 'Existing user try to sign in' do
+      sign_in(user)
+      expect(page).to have_content "Signed in successfully."
+    end
+
+    scenario 'Unexistign user try to sign in' do
+      visit new_user_session_path
+      fill_in 'Email', with: 'some@email.com'
+      fill_in 'Password', with: 'safas23452jskg'
+      click_on 'Log in'
+
+      expect(page).to have_content "Invalid email or password."
+    end
   
 end
