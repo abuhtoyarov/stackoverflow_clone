@@ -8,3 +8,4 @@ FactoryGirl.define do
     password 'klsfdl@32423'
     password_confirmation 'klsfdl@32423'
   end
+end
