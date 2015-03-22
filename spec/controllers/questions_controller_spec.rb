@@ -32,6 +32,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
+    sign_in_user
     before { get :new }
     it 'assigns new Question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
@@ -42,6 +43,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe 'POST #create' do
+    sign_in_user
     # Passing factory girls attributes_for
     # this attributes must be in question: hash for strong params
     context 'with valid attributes' do

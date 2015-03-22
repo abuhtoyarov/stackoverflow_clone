@@ -28,13 +28,10 @@ feature 'Authenticate user can create question', %q{
       )
     end
 
-    scenario 'Unauthenticate user try create question with valid data' do
+    scenario 'Unauthenticate user try create question' do
       sign_out
       visit '/questions'
       click_on  'Ask question'
-      fill_in 'Title', with: question.title
-      fill_in 'Body', with: question.body
-      click_on 'Create'
       expect(page).to have_content(
         'You need to sign in or sign up before continuing.'
       )
