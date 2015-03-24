@@ -12,10 +12,10 @@ RSpec.describe AnswersController, type: :controller do
         # {:action=>"create", :answer=>{:body=>"MyString"},
         # :controller=>"answers", :question_id=>"193"}
         expect { 
-              post :create, 
-                answer: attributes_for(:answer), 
-                question_id: question 
-            }.to change(question.answers, :count).by(1)
+          post :create,
+          answer: attributes_for(:answer),
+          question_id: question
+        }.to change(question.answers, :count).by(1)
       end
       it 'redirect to question #show' do
         post :create, answer: attributes_for(:answer), question_id: question
@@ -26,21 +26,25 @@ RSpec.describe AnswersController, type: :controller do
     context 'with invalid attributes' do
       it 'dont save answer to database' do
         expect { 
-            post :create, 
-              answer: attributes_for(:invalid_answer), 
-              question_id: question 
-          }.to_not change(Answer, :count)
+          post :create,
+          answer: attributes_for(:invalid_answer),
+          question_id: question
+        }.to_not change(Answer, :count)
       end
       it 'render question #show' do
-        post :create, 
+        post( 
+          :create, 
           answer: attributes_for(:invalid_answer), 
           question_id: question
+        )
         expect(response).to render_template 'questions/show'
       end
       it 'populates an array of answers' do
-        post :create, 
+        post(
+          :create, 
           answer: attributes_for(:invalid_answer), 
           question_id: question
+        )
         expect(assigns(:answers)).to match_array [answer]
       end
     end
