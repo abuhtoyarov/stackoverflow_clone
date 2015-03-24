@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :question do
     title "This is valid title with 15 symbol minimum"
     body  "Just a body"
+    user
 
     factory :invalid_question do
       title nil
@@ -13,6 +14,7 @@ FactoryGirl.define do
         create(:answer, question: question)
       end
     end
+
   end
 
 end

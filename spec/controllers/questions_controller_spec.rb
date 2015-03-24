@@ -48,6 +48,7 @@ RSpec.describe QuestionsController, type: :controller do
     # this attributes must be in question: hash for strong params
     context 'with valid attributes' do
       it 'saves the new question to database' do
+
         expect { post :create, question: attributes_for(:question) }.
           to change(Question, :count).by(1)
       end
@@ -65,6 +66,49 @@ RSpec.describe QuestionsController, type: :controller do
       it 'redirect to question#new' do
         post :create, question: attributes_for(:invalid_question)
         expect(response).to render_template :new
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    sign_in_user
+    
+    let!(:question_with_answer) { create(:question_with_answer, user_id: @user.id) }
+    let!(:question) { create(:question, user_id: @user.id) }
+    let!(:another_user_question) { create(:question) }
+
+    context 'User can delete his own question without answers' do
+      it 'delete question from database' do
+        expect { delete :destroy, id: question }.
+          to change(Question, :count).by(-1)
+      end
+      it 'redirect to questions index' do
+        delete :destroy, id: question
+        expect(response).to redirect_to questions_path
+      end
+    end
+
+    context 'User cant delete his own question with answers' do
+      
+      it 'not delete question from database' do
+        expect { delete :destroy, id: question_with_answer }.
+          to_not change(Question, :count)
+      end
+      it 'redirect to question' do
+        delete :destroy, id: question_with_answer
+        expect(response).to redirect_to assigns(:question)
+      end
+    end
+
+    context 'User cant delete not his own question' do
+      it 'not delete question from database' do
+        expect { delete :destroy, id: another_user_question }.
+          to_not change(Question, :count)
+      end
+
+      it 'redirect to question' do
+        delete :destroy, id: another_user_question
+        expect(response).to redirect_to assigns(:question)
       end
     end
   end
