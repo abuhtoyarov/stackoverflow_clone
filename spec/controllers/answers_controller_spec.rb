@@ -6,6 +6,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     sign_in_user
+
     context 'with valid attributes' do
       it 'saves the new answer to database' do
         # this genereate expected request i.e.:
@@ -49,4 +50,37 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    sign_in_user
+    let!(:answer) { create(:answer, question: question, user_id: @user.id) }
+    let!(:another_user_answer) { create(:question) }
+
+    context 'answers owner' do
+      it 'delete answer from database' do
+        expect { delete :destroy, id: answer, question_id: question }.
+          to change(Answer, :count).by(-1)
+      end
+      it 'redirect to question path' do
+        delete :destroy, id: answer, question_id: question
+        expect(response).to redirect_to question_path(assigns(:question))
+      end
+    end
+
+    context 'another auth user' do
+      let!(:answer) { create(:answer, question: question) }
+      
+      it 'not delete answer from database' do
+        expect { delete :destroy, id: answer, question_id: question }.
+          to_not change(Answer, :count)
+      end
+
+      it 'redirect to question path' do
+        delete :destroy, id: answer, question_id: question
+        expect(response).to redirect_to question_path(assigns(:question))
+      end
+      
+    end
+  end
+
 end

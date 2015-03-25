@@ -77,7 +77,7 @@ RSpec.describe QuestionsController, type: :controller do
     let!(:question) { create(:question, user_id: @user.id) }
     let!(:another_user_question) { create(:question) }
 
-    context 'User can delete his own question without answers' do
+    context 'question owner' do
       it 'delete question from database' do
         expect { delete :destroy, id: question }.
           to change(Question, :count).by(-1)
@@ -88,7 +88,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'User cant delete his own question with answers' do
+    context 'question with answers owner' do
       
       it 'not delete question from database' do
         expect { delete :destroy, id: question_with_answer }.
@@ -100,7 +100,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'User cant delete not his own question' do
+    context 'another user question' do
       it 'not delete question from database' do
         expect { delete :destroy, id: another_user_question }.
           to_not change(Question, :count)

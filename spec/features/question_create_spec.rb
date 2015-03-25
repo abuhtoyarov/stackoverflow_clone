@@ -19,6 +19,8 @@ feature 'Authenticate user can create question', %q{
       fill_in 'Body', with: question.body
       click_on 'Create'
       expect(page).to have_content 'Your question successfully created'
+      expect(page).to have_content question.title
+      expect(page).to have_content question.body
     end
 
     scenario 'Authenticate user try create question with invalid data' do

@@ -1,10 +1,12 @@
 %h2=@question.title
 %p=@question.body
 - if current_user && current_user.id == @question.user_id && @question.answers.count == 0
-  %p= link_to "Delete Question", question_path, method: :delete 
+  %p= link_to 'Delete Question', question_path, method: :delete 
 -unless @answers.count == 0
   -@answers.each do |answer|
     %p=answer.body
+    - if current_user && current_user.id == answer.user_id
+      %p= link_to 'Delete Answer', question_answer_path(@question, answer.id), method: :delete
 -else
   %p Know an answer? Please post it
 

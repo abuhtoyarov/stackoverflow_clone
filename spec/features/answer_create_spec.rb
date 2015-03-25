@@ -17,6 +17,7 @@ feature 'Authenticate user can answer to a question', %q{
       fill_in 'Body', with: answer.body
       click_on 'Post Your Answer'
       expect(page).to have_content 'Your answer successfully created'
+      expect(page).to have_content answer.body
     end
 
     scenario 'Authenticate try create empty answer' do
