@@ -56,6 +56,10 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to assigns(:question)
       end
+      it 'assign new question to current user' do
+        post :create, question: attributes_for(:question)
+        expect(assigns(:question).user).to be(subject.current_user)
+      end
     end
 
     context 'with invalid attributes' do

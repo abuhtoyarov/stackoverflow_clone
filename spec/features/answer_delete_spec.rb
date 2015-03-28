@@ -12,6 +12,7 @@ feature 'Authenticate user can delete his own answer' do
     visit question_path(question)
     click_on 'Delete Answer'
     expect(page).to have_content 'Your answer has been deleted'
+    expect(page).to_not have_content answer.body
   end
 
   scenario 'Authenticate user try delete another user answer' do

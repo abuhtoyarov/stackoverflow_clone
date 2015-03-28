@@ -12,6 +12,7 @@ feature 'Authenticate user can delete his own question' do
     visit question_path(question)
     click_on 'Delete Question'
     expect(page).to have_content 'Your question has been deleted'
+    expect(page).to_not have_content question.title
   end
 
   scenario 'Authenticate user try delete his own question with answers' do
