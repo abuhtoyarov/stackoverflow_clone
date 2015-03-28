@@ -1,0 +1,11 @@
+- if @question.errors.any?
+  %p Your question couldn't be submitted. Please see the errors:
+  %ul
+    - @question.errors.full_messages.each do |msg|
+      %li= msg
+= form_for @question do |form|
+  =form.label :title
+  =form.text_field :title
+  =form.label :body
+  =form.text_area :body
+  =form.button 'Create'

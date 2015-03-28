@@ -1,7 +1,9 @@
 class Question < ActiveRecord::Base
   has_many :answers, dependent: :destroy
+  belongs_to :user
 
-  attr_accessor :title, :body
   validates :title, presence: true, length: { in: 15..255 }
   validates :body, presence: true
+  validates :user_id, presence: true
+
 end

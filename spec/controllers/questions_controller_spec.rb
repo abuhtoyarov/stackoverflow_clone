@@ -5,6 +5,16 @@ RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
   let(:answer) { create(:answer, question: question) }
 
+  describe 'GET #index' do
+    before {get :index}
+    it 'populates an array of questions' do
+      expect(assigns(:questions)).to match_array [question]
+    end
+    it 'renders :index template' do
+      expect(response).to render_template :index
+    end
+  end
+
   describe 'GET #show' do
     before { get :show, id: question }
     it 'assigns the requested question to @question' do
@@ -22,6 +32,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
+    sign_in_user
     before { get :new }
     it 'assigns new Question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
@@ -32,16 +43,22 @@ RSpec.describe QuestionsController, type: :controller do
   end
   
   describe 'POST #create' do
+    sign_in_user
     # Passing factory girls attributes_for
     # this attributes must be in question: hash for strong params
     context 'with valid attributes' do
       it 'saves the new question to database' do
+
         expect { post :create, question: attributes_for(:question) }.
           to change(Question, :count).by(1)
       end
       it 'redirect to question#show' do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to assigns(:question)
+      end
+      it 'assign new question to current user' do
+        post :create, question: attributes_for(:question)
+        expect(assigns(:question).user).to be(subject.current_user)
       end
     end
 
@@ -53,6 +70,49 @@ RSpec.describe QuestionsController, type: :controller do
       it 'redirect to question#new' do
         post :create, question: attributes_for(:invalid_question)
         expect(response).to render_template :new
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    sign_in_user
+    
+    let!(:question_with_answer) { create(:question_with_answer, user_id: @user.id) }
+    let!(:question) { create(:question, user_id: @user.id) }
+    let!(:another_user_question) { create(:question) }
+
+    context 'question owner' do
+      it 'delete question from database' do
+        expect { delete :destroy, id: question }.
+          to change(Question, :count).by(-1)
+      end
+      it 'redirect to questions index' do
+        delete :destroy, id: question
+        expect(response).to redirect_to questions_path
+      end
+    end
+
+    context 'question with answers owner' do
+      
+      it 'not delete question from database' do
+        expect { delete :destroy, id: question_with_answer }.
+          to_not change(Question, :count)
+      end
+      it 'redirect to question' do
+        delete :destroy, id: question_with_answer
+        expect(response).to redirect_to assigns(:question)
+      end
+    end
+
+    context 'another user question' do
+      it 'not delete question from database' do
+        expect { delete :destroy, id: another_user_question }.
+          to_not change(Question, :count)
+      end
+
+      it 'redirect to question' do
+        delete :destroy, id: another_user_question
+        expect(response).to redirect_to assigns(:question)
       end
     end
   end
