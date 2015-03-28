@@ -5,7 +5,7 @@ feature 'Authenticate user can delete his own answer' do
   given!(:user) { create(:user) }
   
   given(:question) { create(:question) }
-  given!(:answer) { create(:answer, user_id: user.id, question: question) }
+  given!(:answer) { create(:answer, user: user, question: question) }
 
   scenario 'Authenticate user try delete his own answer' do
     sign_in(user)

@@ -1,6 +1,10 @@
 FactoryGirl.define do
+  sequence :title do |seq|
+    "This is valid title number #{seq}"
+  end
+
   factory :question do
-    title "This is valid title with 15 symbol minimum"
+    title
     body  "Just a body"
     user
 

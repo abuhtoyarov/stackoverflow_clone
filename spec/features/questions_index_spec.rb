@@ -5,11 +5,15 @@ feature 'User can browse list of questions', %q{
   As a User
   I want be able to browse list of questions
   } do
-    scenario 'There are some questions' do
-      question = create(:question)
+    scenario 'There are some questions with link' do
+      questions = create_list(:question, 2)
       visit root_path
       expect(page).to have_content 'Top Questions'
-      expect(page).to have_content question.title
+      questions.each do |qst|
+        expect(page).to have_content(qst.title)
+      end
+      click_link questions.first.title
+      expect(page).to have_content(questions.first.title)
     end
 
     scenario 'There are not questions' do

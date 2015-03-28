@@ -1,10 +1,10 @@
 class AnswersController < ApplicationController
 before_action :authenticate_user!
+before_action :find_question
 
   def create
-    @question = Question.find(params[:question_id])
     @answer = @question.answers.create(answer_params)
-    @answer.user_id = current_user.id
+    @answer.user = current_user
     if @answer.save
       flash[:notice] = 'Your answer successfully created'
       redirect_to @question
@@ -16,7 +16,6 @@ before_action :authenticate_user!
   end
 
   def destroy
-    @question = Question.find(params[:question_id])
     @answer = @question.answers.find(params[:id])
     if current_user.id == @answer.user_id
       @answer.destroy!
@@ -30,5 +29,9 @@ before_action :authenticate_user!
   private
     def answer_params
       params.require(:answer).permit(:body)
+    end
+
+    def find_question
+      @question = Question.find(params[:question_id])
     end
 end
