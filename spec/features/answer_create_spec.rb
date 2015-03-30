@@ -11,7 +11,7 @@ feature 'Authenticate user can answer to a question', %q{
 
 
 
-    scenario 'Authenticate user try create regular answer' do
+    scenario 'Authenticate user try create regular answer', js: true do
       sign_in(user)
       visit question_path(question)
       fill_in 'Body', with: answer.body
@@ -20,7 +20,7 @@ feature 'Authenticate user can answer to a question', %q{
       expect(page).to have_content answer.body
     end
 
-    scenario 'Authenticate try create empty answer' do
+    scenario 'Authenticate try create empty answer', js: true do
       sign_in(user)
       visit question_path(question)
       click_on 'Post Your Answer'
@@ -29,7 +29,7 @@ feature 'Authenticate user can answer to a question', %q{
       )
     end
 
-    scenario 'Unauthtenticate user try create regular answer' do
+    scenario 'Unauthtenticate user try create regular answer', js: true do
       visit question_path(question)
       fill_in 'Body', with: answer.body
       click_on 'Post Your Answer'
