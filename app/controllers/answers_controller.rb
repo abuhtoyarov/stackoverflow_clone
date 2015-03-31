@@ -3,7 +3,7 @@ before_action :authenticate_user!
 before_action :find_question
 
   def create
-    @answer = @question.answers.create(answer_params)
+    @answer = @question.answers.build(answer_params)
     @answer.user = current_user
     @answer.save
     # if @answer.save

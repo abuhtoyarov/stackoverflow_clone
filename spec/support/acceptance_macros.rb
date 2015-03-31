@@ -15,6 +15,6 @@ module AcceptanceMacros
   end
   
   def sign_out
-    click_on 'Sign out'
+    click_on 'Sign Out'
   end
 end
