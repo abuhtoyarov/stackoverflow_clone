@@ -13,17 +13,30 @@ RSpec.describe AnswersController, type: :controller do
         # {:action=>"create", :answer=>{:body=>"MyString"},
         # :controller=>"answers", :question_id=>"193"}
         expect { 
-          post :create,
-          answer: attributes_for(:answer),
-          question_id: question
+          post(
+            :create,
+            answer: attributes_for(:answer),
+            question_id: question,
+            format: 'js'
+          )
         }.to change(question.answers, :count).by(1)
       end
-      it 'redirect to question #show' do
-        post :create, answer: attributes_for(:answer), question_id: question
-        expect(response).to redirect_to(question)
+      it 'show answers#create' do
+        post(
+          :create,
+          answer: attributes_for(:answer),
+          question_id: question,
+          format: 'js'
+        )
+        expect(response).to render_template 'answers/create'
       end
       it 'assign new answer to current user' do
-        post :create, answer: attributes_for(:answer), question_id: question
+        post(
+          :create,
+          answer: attributes_for(:answer),
+          question_id: question,
+          format: 'js'
+        )
         expect(assigns(:answer).user).to be(subject.current_user)
       end
     end
@@ -31,26 +44,22 @@ RSpec.describe AnswersController, type: :controller do
     context 'with invalid attributes' do
       it 'dont save answer to database' do
         expect { 
-          post :create,
-          answer: attributes_for(:invalid_answer),
-          question_id: question
+          post(
+            :create,
+            answer: attributes_for(:invalid_answer),
+            question_id: question,
+            format: 'js'
+          )
         }.to_not change(Answer, :count)
       end
-      it 'render question #show' do
-        post( 
-          :create, 
-          answer: attributes_for(:invalid_answer), 
-          question_id: question
-        )
-        expect(response).to render_template 'questions/show'
-      end
-      it 'populates an array of answers' do
+      it 'show answers#create' do
         post(
-          :create, 
-          answer: attributes_for(:invalid_answer), 
-          question_id: question
+          :create,
+          answer: attributes_for(:invalid_answer),
+          question_id: question,
+          format: 'js'
         )
-        expect(assigns(:answers)).to match_array [answer]
+        expect(response).to render_template 'answers/create'
       end
     end
   end

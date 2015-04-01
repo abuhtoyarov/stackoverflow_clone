@@ -3,16 +3,16 @@ before_action :authenticate_user!
 before_action :find_question
 
   def create
-    @answer = @question.answers.create(answer_params)
+    @answer = @question.answers.build(answer_params)
     @answer.user = current_user
-    if @answer.save
-      flash[:notice] = 'Your answer successfully created'
-      redirect_to @question
-    else
-      #render DONT execute any code in the action so we need to assign @answers
-      @answers = @question.answers.reset
-      render 'questions/show'
-    end
+    @answer.save
+    # if @answer.save
+    #   flash[:notice] = 'Your answer successfully created'
+    # else
+    #   #render DONT execute any code in the action so we need to assign @answers
+    #   @answers = @question.answers.reset
+    #   render 'questions/show'
+    # end
   end
 
   def destroy

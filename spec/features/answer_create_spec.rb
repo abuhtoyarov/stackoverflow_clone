@@ -9,32 +9,25 @@ feature 'Authenticate user can answer to a question', %q{
     given(:answer) { create(:answer) }
     given(:user) { create(:user) }
 
-
-
-    scenario 'Authenticate user try create regular answer' do
+    scenario 'Authenticate user try create regular answer with ajax', js: true do
       sign_in(user)
       visit question_path(question)
       fill_in 'Body', with: answer.body
       click_on 'Post Your Answer'
-      expect(page).to have_content 'Your answer successfully created'
-      expect(page).to have_content answer.body
+      within('.answers') { expect(page).to have_content answer.body }
     end
 
-    scenario 'Authenticate try create empty answer' do
+    scenario 'Authenticate try create empty answer with ajax', js: true do
       sign_in(user)
       visit question_path(question)
       click_on 'Post Your Answer'
-      expect(page).to have_content(
-        "Your answer couldn't be submitted. Please see the errors:"
-      )
+      within('.answers') { expect(page).to_not have_content answer.body }
     end
 
-    scenario 'Unauthtenticate user try create regular answer' do
+    scenario 'Unauthtenticate user try create regular answer with ajax', js: true do
       visit question_path(question)
       fill_in 'Body', with: answer.body
       click_on 'Post Your Answer'
-      expect(page).to have_content(
-        'You need to sign in or sign up before continuing.'
-      )
+      within('.answers') { expect(page).to_not have_content answer.body }
     end
 end
