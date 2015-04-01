@@ -6,7 +6,7 @@
 .answers
   -if @question.answers.any?
     -@question.answers.each do |answer|
-      =render partial: 'answer', locals: { answer: answer, question: @question }
+      =render partial: 'answer', locals: { answer: answer }
   -else
     %p Know an answer? Please post it
 
