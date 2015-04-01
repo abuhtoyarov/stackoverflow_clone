@@ -1,2 +1,6 @@
-$('.answers').html('<%= j render 'questions/answers' %>');
+$('.answers').append( 
+    '<%= j render partial: 'questions/answer',
+      locals: { answer: @answer, question: @question } 
+    %>'
+  );
 $('#answer_body').val('');
