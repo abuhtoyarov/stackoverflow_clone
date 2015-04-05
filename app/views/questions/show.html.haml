@@ -1,7 +1,4 @@
-%h2=@question.title
-%p=@question.body
-- if current_user && current_user.id == @question.user_id && @question.answers.empty?
-  %p= link_to 'Delete Question', question_path, method: :delete
+=render 'question'
 
 .answers
   -if @question.answers.any?
@@ -15,7 +12,7 @@
   %ul
     - @answer.errors.full_messages.each do |msg|
       %li= msg
-=form_for [@question, @answer], remote: true do |form|
-  =form.label :body
-  =form.text_area :body
-  =form.button 'Post Your Answer'
+=form_for [@question, @answer], remote: true do |f|
+  =f.label :body
+  =f.text_area :body
+  =f.button 'Post Your Answer'

@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :destroy]
-  before_action :find_question, only: [:show, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :destroy, :update]
+  before_action :find_question, only: [:show, :destroy, :update]
 
   def index
     @questions = Question.all
@@ -27,8 +27,12 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def update
+    @question.update(question_params) if user_is_owner?
+  end
+
   def destroy
-    if current_user.id == @question.user_id && @question.answers.count == 0
+    if user_is_owner? && @question.answers.empty?
       @question.destroy!
       flash[:notice] = 'Your question has been deleted'
       redirect_to questions_path
@@ -38,13 +42,17 @@ class QuestionsController < ApplicationController
     end
   end
 
-
   private
-    def find_question
-      @question = Question.find(params[:id])
-    end
 
-    def question_params
-      params.require(:question).permit(:title, :body)
-    end
+  def user_is_owner?
+    current_user.id == @question.user_id
+  end
+
+  def find_question
+    @question = Question.find(params[:id])
+  end
+
+  def question_params
+    params.require(:question).permit(:title, :body)
+  end
 end

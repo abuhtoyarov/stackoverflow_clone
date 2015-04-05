@@ -1,11 +1,10 @@
 FactoryGirl.define do
-  sequence :title do |seq|
-    "This is valid title number #{seq}"
-  end
+  sequence(:title) { |n| "This is valid title number #{n}" }
+  sequence(:body) { |n| "Just a body number #{n}" }
 
   factory :question do
     title
-    body  "Just a body"
+    body
     user
 
     factory :invalid_question do
@@ -18,7 +17,5 @@ FactoryGirl.define do
         create(:answer, question: question)
       end
     end
-
   end
-
 end
