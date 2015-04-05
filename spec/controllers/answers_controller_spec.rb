@@ -12,7 +12,7 @@ RSpec.describe AnswersController, type: :controller do
         # this genereate expected request i.e.:
         # {:action=>"create", :answer=>{:body=>"MyString"},
         # :controller=>"answers", :question_id=>"193"}
-        expect { 
+        expect {
           post(
             :create,
             answer: attributes_for(:answer),
@@ -71,8 +71,8 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'answers owner' do
       it 'delete answer from database' do
-        expect { delete :destroy, id: answer, question_id: question }.
-          to change(Answer, :count).by(-1)
+        expect { delete :destroy, id: answer, question_id: question }
+          .to change(Answer, :count).by(-1)
       end
       it 'redirect to question path' do
         delete :destroy, id: answer, question_id: question
@@ -82,18 +82,16 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'another auth user' do
       let!(:answer) { create(:answer, question: question) }
-      
+
       it 'not delete answer from database' do
-        expect { delete :destroy, id: answer, question_id: question }.
-          to_not change(Answer, :count)
+        expect { delete :destroy, id: answer, question_id: question }
+          .to_not change(Answer, :count)
       end
 
       it 'redirect to question path' do
         delete :destroy, id: answer, question_id: question
         expect(response).to redirect_to question_path(assigns(:question))
       end
-      
     end
   end
-
 end
