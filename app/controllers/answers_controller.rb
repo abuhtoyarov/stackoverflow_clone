@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
-before_action :authenticate_user!
-before_action :find_question
+  before_action :authenticate_user!
+  before_action :find_question
 
   def create
     @answer = @question.answers.build(answer_params)
@@ -23,15 +23,16 @@ before_action :find_question
     else
       flash[:error] = 'Permission denied'
     end
-      redirect_to @question
+    redirect_to @question
   end
 
   private
-    def answer_params
-      params.require(:answer).permit(:body)
-    end
 
-    def find_question
-      @question = Question.find(params[:question_id])
-    end
+  def answer_params
+    params.require(:answer).permit(:body)
+  end
+
+  def find_question
+    @question = Question.find(params[:question_id])
+  end
 end
