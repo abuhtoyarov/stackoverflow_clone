@@ -1,18 +1,19 @@
 =render 'question'
 
 .answers
-  -if @question.answers.any?
-    -@question.answers.each do |answer|
+  -if @answers.any?
+    -@answers.each do |answer|
       =render partial: 'answer', locals: { answer: answer }
   -else
     %p Know an answer? Please post it
 
--if @answer.errors.any?
-  %p Your answer couldn't be submitted. Please see the errors:
-  %ul
-    - @answer.errors.full_messages.each do |msg|
-      %li= msg
-=form_for [@question, @answer], remote: true do |f|
-  =f.label :body
-  =f.text_area :body
-  =f.button 'Post Your Answer'
+.answer_new
+  -if @answer.errors.any?
+    %p Your answer couldn't be submitted. Please see the errors:
+    %ul
+      - @answer.errors.full_messages.each do |msg|
+        %li= msg
+  =form_for [@question, @answer], remote: true do |f|
+    =f.label :body
+    =f.text_area :body
+    =f.button 'Post Your Answer'

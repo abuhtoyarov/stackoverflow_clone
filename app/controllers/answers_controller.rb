@@ -1,23 +1,20 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question
+  before_action :find_answer, only: [:update, :destroy]
 
   def create
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
     @answer.save
-    # if @answer.save
-    #   flash[:notice] = 'Your answer successfully created'
-    # else
-    #   #render DONT execute any code in the action so we need to assign @answers
-    #   @answers = @question.answers.reset
-    #   render 'questions/show'
-    # end
+  end
+
+  def update
+    @answer.update(answer_params) if user_is_owner?
   end
 
   def destroy
-    @answer = @question.answers.find(params[:id])
-    if current_user.id == @answer.user_id
+    if user_is_owner?
       @answer.destroy!
       flash[:notice] = 'Your answer has been deleted'
     else
@@ -34,5 +31,13 @@ class AnswersController < ApplicationController
 
   def find_question
     @question = Question.find(params[:question_id])
+  end
+
+  def find_answer
+    @answer = @question.answers.find(params[:id])
+  end
+
+  def user_is_owner?
+    current_user.id == @answer.user_id
   end
 end

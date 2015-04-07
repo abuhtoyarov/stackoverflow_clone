@@ -116,10 +116,10 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let!(:new_question) { create(:question) }
+    let!(:new_question) { build(:question) }
     let!(:another_user_question) { create(:question) }
 
-    describe 'auth user' do
+    context 'auth user' do
       sign_in_user
       let!(:question) { create(:question, user_id: @user.id) }
 

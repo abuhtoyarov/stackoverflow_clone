@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  include QuestionsHelper
+
   before_action :authenticate_user!, only: [:new, :create, :destroy, :update]
   before_action :find_question, only: [:show, :destroy, :update]
 
@@ -28,7 +30,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(question_params) if user_is_owner?
+    @question.update!(question_params) if user_is_owner?
   end
 
   def destroy
@@ -43,10 +45,6 @@ class QuestionsController < ApplicationController
   end
 
   private
-
-  def user_is_owner?
-    current_user.id == @question.user_id
-  end
 
   def find_question
     @question = Question.find(params[:id])

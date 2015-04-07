@@ -1,3 +1,19 @@
-%p=answer.body
-- if current_user && current_user.id == answer.user_id
-  %p=link_to 'Delete Answer', question_answer_path(@question, answer), method: :delete
+- if answer.persisted?
+  .answer{ id: "answer#{answer.id}" }
+    %p=answer.body
+
+    - if current_user && current_user.id == answer.user_id
+      %p=link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+      -if answer.errors.any?
+        %p Your answer couldn't be updated. Please see the errors:
+        %ul
+          - answer.errors.full_messages.each do |msg|
+            %li= msg
+
+      .answer-edit-form
+        =form_for [@question, answer], remote: true do |f|
+          =f.label :body
+          =f.text_area  :body
+          =f.submit 'Submit'
+
+      %p=link_to 'Delete Answer', question_answer_path(@question, answer), method: :delete
