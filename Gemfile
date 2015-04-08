@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+  source 'https://rubygems.org'
 
 ruby '2.1.3'
 
@@ -10,6 +10,8 @@ gem 'pg'
 gem 'sass-rails', '~> 4.0.3'
 # Use HAML for templates
 gem 'haml-rails'
+# Use bootstrap for CSS
+gem 'bootstrap-sass', '~> 3.3.4'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
