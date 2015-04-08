@@ -14,13 +14,8 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if user_is_owner?
-      @answer.destroy!
-      flash[:notice] = 'Your answer has been deleted'
-    else
-      flash[:error] = 'Permission denied'
-    end
-    redirect_to @question
+    # TODO: add flash errors. remove bang
+    @answer.destroy! if user_is_owner?
   end
 
   private
