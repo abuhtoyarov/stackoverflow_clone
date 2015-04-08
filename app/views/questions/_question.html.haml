@@ -1,13 +1,16 @@
 .question
   %h2=@question.title
-  %p=@question.body
+  %p.lead=@question.body
   - if current_user && user_is_owner? && @question.answers.empty?
-    %p= link_to 'Edit', '#', class: 'edit-question-link'
+    = link_to 'Edit', '#', class: 'edit-question-link btn btn-warning'
+    = link_to 'Delete Question', question_path, method: :delete, class: 'btn btn-danger pull-right'
     .question-edit-form
-      =form_for @question, remote: true do |f|
-        =f.label :title
-        =f.text_field :title
-        =f.label :body
-        =f.text_area :body
-        =f.button 'Submit'
-    %p= link_to 'Delete Question', question_path, method: :delete
+      .form-inline
+        =form_for @question, remote: true, html:{role: 'form'} do |f|
+          .form-group
+            =f.label :title
+            =f.text_field :title, class: 'form-control'
+          .form-group
+            =f.label :body
+            =f.text_area :body, class: 'form-control'
+          =f.button 'Submit', class: 'btn btn-default'

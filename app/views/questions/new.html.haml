@@ -1,11 +1,15 @@
+%h1 Ask new question
 - if @question.errors.any?
-  %p Your question couldn't be submitted. Please see the errors:
-  %ul
-    - @question.errors.full_messages.each do |msg|
-      %li= msg
+  .bg-danger
+    %p Your question couldn't be submitted. Please see the errors:
+    %ul
+      - @question.errors.full_messages.each do |msg|
+        %li= msg
 = form_for @question do |form|
-  =form.label :title
-  =form.text_field :title
-  =form.label :body
-  =form.text_area :body
-  =form.button 'Create'
+  .form-group
+    =form.label :title
+    =form.text_field :title, class: 'form-control'
+  .form-group
+    =form.label :body
+    =form.text_area :body, class: 'form-control'
+  =form.button 'Create', class: 'btn btn-default'
