@@ -20,4 +20,7 @@
         %p=link_to 'Delete Answer', 
           question_answer_path(@question, answer), 
           method: :delete, remote: true
+
+      - if current_user && current_user.id == @question.user_id
+        %p=link_to 'Accept answer', '#'
       %hr

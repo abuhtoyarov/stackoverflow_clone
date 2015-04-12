@@ -17,5 +17,11 @@ FactoryGirl.define do
         create(:answer, question: question)
       end
     end
+
+    factory :question_with_answers do
+      after :create do |question|
+        create_list :answer, 3, question: question
+      end
+    end
   end
 end

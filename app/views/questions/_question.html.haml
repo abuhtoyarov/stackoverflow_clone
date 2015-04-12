@@ -1,9 +1,10 @@
 .question
   %h2=@question.title
   %p.lead=@question.body
-  - if current_user && user_is_owner? && @question.answers.empty?
+  - if current_user && user_is_owner?
     = link_to 'Edit', '#', class: 'edit-question-link btn btn-warning'
-    = link_to 'Delete Question', question_path, method: :delete, class: 'btn btn-danger pull-right'
+    - if @question.answers.empty?
+      = link_to 'Delete Question', question_path, method: :delete, class: 'btn btn-danger pull-right'
     .question-edit-form
       .form-inline
         =form_for @question, remote: true, html:{role: 'form'} do |f|
