@@ -136,4 +136,72 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'patch #update_accepted' do
+    let(:antoher_question_answer) { create(:answer) }
+
+    context 'auth user' do
+      sign_in_user
+      let!(:question) { create(:question, user_id: @user.id) }
+      let!(:answer) { create(:answer, user_id: @user.id, question: question) }
+      let!(:old_accepted_answer) do
+        create(
+          :answer,
+          user_id: @user.id,
+          question: question,
+          is_accepted: true
+        )
+      end
+
+      context 'question owner' do
+        it 'change answer attribute is_accepted' do
+          patch(
+            :update_accepted,
+            id: answer,
+            question_id: answer.question,
+            format: 'js'
+          )
+          answer.reload
+          expect(answer.is_accepted).to eq true
+        end
+
+        it 'change previous accepted answer attribute is_accepted to false' do
+          patch(
+            :update_accepted,
+            id: answer,
+            question_id: answer.question,
+            format: 'js'
+          )
+          old_accepted_answer.reload
+          expect(old_accepted_answer.is_accepted).to eq false
+        end
+      end
+
+      context 'another user' do
+        it 'not change answer attribute is_accepted' do
+          patch(
+            :update_accepted,
+            id: antoher_question_answer,
+            question_id: antoher_question_answer.question,
+            format: 'js'
+          )
+          antoher_question_answer.reload
+          expect(antoher_question_answer.is_accepted).to eq false
+        end
+      end
+    end
+
+    context 'unauth user' do
+      it 'not change answer attribute' do
+        patch(
+          :update_accepted,
+          id: answer,
+          question_id: answer.question,
+          format: 'js'
+        )
+        answer.reload
+        expect(answer.is_accepted).to eq false
+      end
+    end
+  end
 end

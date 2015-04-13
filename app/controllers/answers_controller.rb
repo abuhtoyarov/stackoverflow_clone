@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question
-  before_action :find_answer, only: [:update, :destroy]
+  before_action :find_answer, only: [:update, :destroy, :update_accepted]
 
   def create
     @answer = @question.answers.build(answer_params)
@@ -16,6 +16,10 @@ class AnswersController < ApplicationController
   def destroy
     # TODO: add flash errors. remove bang
     @answer.destroy! if user_is_owner?
+  end
+
+  def update_accepted
+    @answer.accept if current_user.id == @question.user_id
   end
 
   private

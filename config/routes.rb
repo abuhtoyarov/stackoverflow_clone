@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :questions do
-    resources :answers
+    resources :answers do
+      member do
+        patch 'update_accepted'
+      end
+    end
   end
   root 'questions#index'
   # The priority is based upon order of creation: first created -> highest priority.

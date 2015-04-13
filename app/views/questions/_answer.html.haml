@@ -22,5 +22,8 @@
           method: :delete, remote: true
 
       - if current_user && current_user.id == @question.user_id
-        %p=link_to 'Accept answer', '#'
+        %p=link_to 'Accept answer', 
+          '#', 
+          class: 'update-accepted-answer', 
+          data: { answer_id: answer.id }
       %hr
