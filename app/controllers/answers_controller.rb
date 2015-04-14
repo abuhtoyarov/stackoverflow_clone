@@ -20,6 +20,7 @@ class AnswersController < ApplicationController
 
   def update_accepted
     @answer.accept if current_user.id == @question.user_id
+    @answers = @answer.question.answers
   end
 
   private

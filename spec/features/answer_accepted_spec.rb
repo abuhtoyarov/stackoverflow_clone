@@ -15,6 +15,7 @@ feature 'User can accept answer', %q{
     sign_in(user)
     visit question_path(question)
     within("#answer#{answer.id}") { click_on 'Accept answer' }
+    sleep(1)
     within(first('.answer')) do
       expect(page).to have_content answer.body
       expect(page).to have_content 'accepted'

@@ -1,11 +1,6 @@
 .jumbotron=render 'question'
 
-.answers
-  -if @answers.any?
-    -@answers.each do |answer|
-      =render partial: 'answer', locals: { answer: answer }
-  -else
-    %h3 Know an answer? Please post it
+.answers=render 'answers'
 
 .answer_new.row
   -if @answer.errors.any?
