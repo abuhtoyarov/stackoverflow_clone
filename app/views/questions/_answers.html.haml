@@ -1,5 +1,5 @@
 -if @answers.any?
-  -@answers.by_rating.each do |answer|
-    =render partial: 'questions/answer', locals: { answer: answer }
+  / magic! calling answers/_answer for each answer
+  =render @answers.by_rating
 -else
   %h3 Know an answer? Please post it

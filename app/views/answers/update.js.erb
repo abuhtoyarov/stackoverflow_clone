@@ -1,4 +1,1 @@
-$("#answer<%=@answer.id%>").html('<%=
-    j render partial: 'questions/answer',
-    locals: { answer: @answer } 
-  %>');
+$("#answer<%=@answer.id%>").html('<%= j render @answer %>');

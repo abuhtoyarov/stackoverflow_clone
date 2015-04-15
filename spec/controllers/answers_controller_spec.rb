@@ -137,7 +137,7 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'patch #update_accepted' do
+  describe 'patch #accept' do
     let(:antoher_question_answer) { create(:answer) }
 
     context 'auth user' do
@@ -156,7 +156,7 @@ RSpec.describe AnswersController, type: :controller do
       context 'question owner' do
         it 'change answer attribute is_accepted' do
           patch(
-            :update_accepted,
+            :accept,
             id: answer,
             question_id: answer.question,
             format: 'js'
@@ -167,7 +167,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'change previous accepted answer attribute is_accepted to false' do
           patch(
-            :update_accepted,
+            :accept,
             id: answer,
             question_id: answer.question,
             format: 'js'
@@ -180,7 +180,7 @@ RSpec.describe AnswersController, type: :controller do
       context 'another user' do
         it 'not change answer attribute is_accepted' do
           patch(
-            :update_accepted,
+            :accept,
             id: antoher_question_answer,
             question_id: antoher_question_answer.question,
             format: 'js'
@@ -194,7 +194,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'unauth user' do
       it 'not change answer attribute' do
         patch(
-          :update_accepted,
+          :accept,
           id: answer,
           question_id: answer.question,
           format: 'js'

@@ -3,7 +3,7 @@
     .answer.col-md-6{ id: "answer#{answer.id}" }
       %p=answer.body
 
-      - if current_user && current_user.id == answer.user_id
+      - if current_user && current_user.owner?(answer)
         %p=link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
         -if answer.errors.any?
           %p Your answer couldn't be updated. Please see the errors:
@@ -21,11 +21,11 @@
           question_answer_path(@question, answer), 
           method: :delete, remote: true
 
-      - if current_user && current_user.id == @question.user_id
+      - if current_user && current_user.owner?(@question)
         %p.accept-link=link_to 'Accept answer', 
-          update_accepted_question_answer_path(@question, answer),
+          accept_question_answer_path(@question, answer),
           method: :patch,
           remote: true
-      - if answer.is_accepted
+      - if answer.accepted?
         %p.accepted 'accepted'
       %hr

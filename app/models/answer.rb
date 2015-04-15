@@ -7,8 +7,12 @@ class Answer < ActiveRecord::Base
   validates :body, :user_id, presence: true
 
   def accept
-    return if is_accepted
+    return if accepted?
     question.answers.update_all(is_accepted: false)
     update(is_accepted: true)
+  end
+
+  def accepted?
+    is_accepted
   end
 end

@@ -9,8 +9,11 @@ RSpec.describe Answer, type: :model do
   describe '#accept_answer' do
     let!(:question) { create(:question_with_answers) }
     let!(:answer) { create(:answer, question: question) }
-    let!(:old_accepted_answer) { create(:answer, question: question) }
-    before { answer.accept }
+    before do
+      # accept some answer before testing
+      question.answers.take.accept
+      answer.accept
+    end
 
     it 'should change answer to accepted' do
       expect(answer.is_accepted).to eq true

@@ -2,9 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   resources :questions do
     resources :answers do
-      member do
-        patch 'update_accepted'
-      end
+      patch 'accept', on: :member
     end
   end
   root 'questions#index'

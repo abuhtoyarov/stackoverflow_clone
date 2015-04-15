@@ -1,6 +1,4 @@
 class QuestionsController < ApplicationController
-  include QuestionsHelper
-
   before_action :authenticate_user!, only: [:new, :create, :destroy, :update]
   before_action :find_question, only: [:show, :destroy, :update]
 
@@ -30,11 +28,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update!(question_params) if user_is_owner?
+    @question.update!(question_params) if current_user.owner?(@question)
   end
 
   def destroy
-    if user_is_owner? && @question.answers.empty?
+    if current_user.owner?(@question) && @question.answers.empty?
       @question.destroy!
       flash[:notice] = 'Your question has been deleted'
       redirect_to questions_path
