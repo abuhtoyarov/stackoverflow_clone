@@ -5,6 +5,6 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   def owner?(obj)
-    obj.user_id && obj.user_id == id
+    obj.try(:user_id) && obj.user_id == id
   end
 end

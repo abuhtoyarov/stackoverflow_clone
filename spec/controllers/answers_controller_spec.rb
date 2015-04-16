@@ -144,17 +144,9 @@ RSpec.describe AnswersController, type: :controller do
       sign_in_user
       let!(:question) { create(:question, user_id: @user.id) }
       let!(:answer) { create(:answer, user_id: @user.id, question: question) }
-      let!(:old_accepted_answer) do
-        create(
-          :answer,
-          user_id: @user.id,
-          question: question,
-          is_accepted: true
-        )
-      end
 
       context 'question owner' do
-        it 'change answer attribute is_accepted' do
+        it 'change answer attribute accepted' do
           patch(
             :accept,
             id: answer,
@@ -162,23 +154,12 @@ RSpec.describe AnswersController, type: :controller do
             format: 'js'
           )
           answer.reload
-          expect(answer.is_accepted).to eq true
-        end
-
-        it 'change previous accepted answer attribute is_accepted to false' do
-          patch(
-            :accept,
-            id: answer,
-            question_id: answer.question,
-            format: 'js'
-          )
-          old_accepted_answer.reload
-          expect(old_accepted_answer.is_accepted).to eq false
+          expect(answer.accepted?).to eq true
         end
       end
 
       context 'another user' do
-        it 'not change answer attribute is_accepted' do
+        it 'not change answer attribute accepted' do
           patch(
             :accept,
             id: antoher_question_answer,
@@ -186,7 +167,7 @@ RSpec.describe AnswersController, type: :controller do
             format: 'js'
           )
           antoher_question_answer.reload
-          expect(antoher_question_answer.is_accepted).to eq false
+          expect(antoher_question_answer.accepted?).to eq false
         end
       end
     end
@@ -200,7 +181,7 @@ RSpec.describe AnswersController, type: :controller do
           format: 'js'
         )
         answer.reload
-        expect(answer.is_accepted).to eq false
+        expect(answer.accepted?).to eq false
       end
     end
   end
