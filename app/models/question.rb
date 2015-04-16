@@ -5,5 +5,4 @@ class Question < ActiveRecord::Base
   validates :title, presence: true, length: { in: 15..255 }
   validates :body, presence: true
   validates :user_id, presence: true
-
 end

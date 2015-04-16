@@ -1,0 +1,17 @@
+.question
+  %h2=@question.title
+  %p.lead=@question.body
+  - if current_user && current_user.owner?(@question)
+    = link_to 'Edit', '#', class: 'edit-question-link btn btn-warning'
+    - if @question.answers.empty?
+      = link_to 'Delete Question', question_path, method: :delete, class: 'btn btn-danger pull-right'
+    .question-edit-form
+      .form-inline
+        =form_for @question, remote: true, html:{role: 'form'} do |f|
+          .form-group
+            =f.label :title
+            =f.text_field :title, class: 'form-control'
+          .form-group
+            =f.label :body
+            =f.text_area :body, class: 'form-control'
+          =f.button 'Submit', class: 'btn btn-default'

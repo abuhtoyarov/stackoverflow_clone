@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe QuestionsController, type: :controller do  
-  #Can call 'question' method to assigns :question
+RSpec.describe QuestionsController, type: :controller do
+  # Can call 'question' method to assigns :question
   let(:question) { create(:question) }
   let(:answer) { create(:answer, question: question) }
 
   describe 'GET #index' do
-    before {get :index}
+    before { get :index }
     it 'populates an array of questions' do
       expect(assigns(:questions)).to match_array [question]
     end
@@ -41,14 +41,13 @@ RSpec.describe QuestionsController, type: :controller do
       expect(response).to render_template :new
     end
   end
-  
+
   describe 'POST #create' do
     sign_in_user
     # Passing factory girls attributes_for
     # this attributes must be in question: hash for strong params
     context 'with valid attributes' do
       it 'saves the new question to database' do
-
         expect { post :create, question: attributes_for(:question) }.
           to change(Question, :count).by(1)
       end
@@ -76,7 +75,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'DELETE #destroy' do
     sign_in_user
-    
+
     let!(:question_with_answer) { create(:question_with_answer, user_id: @user.id) }
     let!(:question) { create(:question, user_id: @user.id) }
     let!(:another_user_question) { create(:question) }
@@ -93,7 +92,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'question with answers owner' do
-      
       it 'not delete question from database' do
         expect { delete :destroy, id: question_with_answer }.
           to_not change(Question, :count)
@@ -117,4 +115,40 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'PATCH #update' do
+    let!(:new_question) { build(:question) }
+    let!(:another_user_question) { create(:question) }
+
+    context 'auth user' do
+      sign_in_user
+      let!(:question) { create(:question, user_id: @user.id) }
+
+      context 'question owner' do
+        it 'change question attributes' do
+          patch :update, id: question, question: new_question.attributes, format: :js
+          question.reload
+          expect(question.title).to eq new_question.title
+          expect(question.body).to eq new_question.body
+        end
+      end
+
+      context 'another user question' do
+        it 'not change question attributes' do
+          patch :update, id: another_user_question, question: new_question.attributes, format: :js
+          another_user_question.reload
+          expect(another_user_question.title).to_not eq new_question.title
+          expect(another_user_question.body).to_not eq new_question.body
+        end
+      end
+    end
+
+    context 'unauth user' do
+      it 'not change question attributes' do
+        patch :update, id: question, question: new_question.attributes, format: :js
+        question.reload
+        expect(question.title).to_not eq new_question.title
+        expect(question.body).to_not eq new_question.body
+      end
+    end
+  end
 end

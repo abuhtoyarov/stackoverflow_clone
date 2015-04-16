@@ -1,21 +1,15 @@
-%h2=@question.title
-%p=@question.body
-- if current_user && current_user.id == @question.user_id && @question.answers.empty?
-  %p= link_to 'Delete Question', question_path, method: :delete
+.jumbotron=render 'question'
 
-.answers
-  -if @question.answers.any?
-    -@question.answers.each do |answer|
-      =render partial: 'answer', locals: { answer: answer }
-  -else
-    %p Know an answer? Please post it
+.answers=render 'answers'
 
--if @answer.errors.any?
-  %p Your answer couldn't be submitted. Please see the errors:
-  %ul
-    - @answer.errors.full_messages.each do |msg|
-      %li= msg
-=form_for [@question, @answer], remote: true do |form|
-  =form.label :body
-  =form.text_area :body
-  =form.button 'Post Your Answer'
+.answer_new.row
+  -if @answer.errors.any?
+    %p Your answer couldn't be submitted. Please see the errors:
+    %ul
+      - @answer.errors.full_messages.each do |msg|
+        %li= msg
+  =form_for [@question, @answer], remote: true, html:{role: 'form'} do |f|
+    .form-group
+      =f.label :body
+      =f.text_area :body, class: 'form-control'
+    =f.button 'Post Your Answer', class: 'btn btn-default'
