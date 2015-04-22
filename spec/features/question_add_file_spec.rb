@@ -7,7 +7,7 @@ feature 'User can attach file to question', %q{
   } do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  given(:file) { create(:attachment) }
+  given(:file) { "#{Rails.root}/spec/fixtures/file.txt" }
 
   before do
     sign_in(user)
@@ -18,8 +18,8 @@ feature 'User can attach file to question', %q{
   scenario 'Auth user attach file to question' do
     fill_in 'Title', with: question.title
     fill_in 'Body', with: question.body
-    attach_file file
+    attach_file 'File', file
     click_on 'Create'
-    expect(page).to have_link file.basename, href: "/uploads/attachment/file/1/#{file.basename}"
+    expect(page).to have_link file.basename, href: "/uploads/attachment/file/1/file.txt"
   end
 end
