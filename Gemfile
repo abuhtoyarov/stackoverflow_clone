@@ -22,6 +22,8 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'devise'
 # file uploading
 gem 'carrierwave'
+# file uploads for ajax forms
+gem 'remotipart'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

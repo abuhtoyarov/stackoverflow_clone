@@ -12,4 +12,7 @@
     .form-group
       =f.label :body
       =f.text_area :body, class: 'form-control'
+      =f.fields_for :attachments do |att|
+        =att.label :file
+        =att.file_field :file
     =f.button 'Post Your Answer', class: 'btn btn-default'

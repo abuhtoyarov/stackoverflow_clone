@@ -23,6 +23,9 @@ RSpec.describe QuestionsController, type: :controller do
     it 'assigns the new Answer to @answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
+    it 'assigns new Attachment to nested attachment for answer' do
+      expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
+    end
     it 'populates an array of answers' do
       expect(assigns(:answers)).to match_array [answer]
     end
