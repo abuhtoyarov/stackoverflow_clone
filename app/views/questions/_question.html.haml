@@ -3,7 +3,7 @@
   %p.lead= @question.body
   %ul
   - @question.attachments.each do |att|
-    %li= link_to att.file.file.filename, att.file.url
+    %li= link_to att.file.filename, att.file.url
   - if current_user && current_user.owner?(@question)
     = link_to 'Edit', '#', class: 'edit-question-link btn btn-warning'
     - if @question.answers.empty?
