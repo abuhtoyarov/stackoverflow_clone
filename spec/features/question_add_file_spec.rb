@@ -20,6 +20,6 @@ feature 'User can attach file to question', %q{
     fill_in 'Body', with: question.body
     attach_file 'File', file
     click_on 'Create'
-    expect(page).to have_link file.basename, href: "/uploads/attachment/file/1/file.txt"
+    expect(page).to have_link 'file.txt', href: "/uploads/attachment/file/1/file.txt"
   end
 end

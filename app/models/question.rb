@@ -2,6 +2,7 @@ class Question < ActiveRecord::Base
   has_many :answers, dependent: :destroy
   has_many :attachments, dependent: :destroy
   belongs_to :user
+  accepts_nested_attributes_for :attachments
 
   validates :title, presence: true, length: { in: 15..255 }
   validates :body, presence: true

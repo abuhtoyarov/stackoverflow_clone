@@ -12,4 +12,8 @@
   .form-group
     =form.label :body
     =form.text_area :body, class: 'form-control'
+  = form.fields_for :attachments do |att|
+    .form-group
+    = att.label :file
+    = att.file_field :file
   =form.button 'Create', class: 'btn btn-default'
