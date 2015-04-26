@@ -5,8 +5,9 @@ feature 'User can attach file to question', %q{
     As a User
     I can attach file to question
   } do
-  given(:user) { create(:user) }
+  given!(:user) { create(:user) }
   given(:question) { create(:question) }
+  given(:user_question) { create(:question, user: user) }
   given(:file) { "#{Rails.root}/spec/fixtures/file.txt" }
   given(:file_two) { "#{Rails.root}/spec/fixtures/file2.txt" }
   before do
