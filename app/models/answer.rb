@@ -5,7 +5,7 @@ class Answer < ActiveRecord::Base
   belongs_to :question
   belongs_to :user
 
-  accepts_nested_attributes_for :attachments, reject_if: :all_blank
+  accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
 
   validates :body, :user_id, presence: true
 

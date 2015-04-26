@@ -18,6 +18,11 @@
           =form_for [@question, answer], remote: true do |f|
             =f.label :body
             =f.text_area  :body
+            .attachments-form
+              =f.fields_for :attachments do |att|
+                = render 'attachment_fields', f: att
+            %p=link_to_add_association "Add file", f, :attachments, class: 'btn btn-default'
+            %br
             =f.submit 'Submit'
 
         %p=link_to 'Delete Answer', 
