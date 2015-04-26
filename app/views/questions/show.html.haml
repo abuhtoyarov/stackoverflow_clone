@@ -13,6 +13,8 @@
       =f.label :body
       =f.text_area :body, class: 'form-control'
       =f.fields_for :attachments do |att|
-        =att.label :file
-        =att.file_field :file
+        = render 'attachment_fields', f: att
+    %p=link_to_add_association "Add file", f, :attachments, class: 'btn btn-default'
+    %br
+
     =f.button 'Post Your Answer', class: 'btn btn-default'
