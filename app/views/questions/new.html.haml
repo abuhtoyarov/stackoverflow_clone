@@ -5,7 +5,7 @@
     %ul
       - @question.errors.full_messages.each do |msg|
         %li= msg
-= form_for @question do |form|
+= nested_form_for @question do |form|
   .form-group
     =form.label :title
     =form.text_field :title, class: 'form-control'
@@ -14,6 +14,9 @@
     =form.text_area :body, class: 'form-control'
   = form.fields_for :attachments do |att|
     .form-group
-    = att.label :file
-    = att.file_field :file
-  =form.button 'Create', class: 'btn btn-default'
+      = att.label :file
+      = att.file_field :file
+      = att.link_to_remove "", class: 'glyphicon glyphicon-remove'
+  %p=form.link_to_add "Add file", :attachments, class: 'btn btn-default'
+  %br
+  =form.button 'Create', class: 'btn btn-primary btn-lg'
