@@ -3,12 +3,13 @@
 .answers=render 'answers'
 
 .answer_new.row
-  -if @answer.errors.any?
-    %p Your answer couldn't be submitted. Please see the errors:
-    %ul
-      - @answer.errors.full_messages.each do |msg|
-        %li= msg
-  =form_for [@question, @answer], remote: true, html:{role: 'form'} do |f|
+  .answers-error  
+    -if @answer.errors.any?
+      %p Your answer couldn't be submitted. Please see the errors:
+      %ul
+        - @answer.errors.full_messages.each do |msg|
+          %li= msg
+  =form_for [@question, @answer], remote: true, data: { type: :json }, html:{role: 'form'} do |f|
     .form-group
       =f.label :body
       =f.text_area :body, class: 'form-control'  
