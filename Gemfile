@@ -18,8 +18,14 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
-
+# user managment
 gem 'devise'
+# file uploading
+gem 'carrierwave'
+# file uploads for ajax forms
+gem 'remotipart'
+# nested forms to add several object in a row
+gem "cocoon"
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

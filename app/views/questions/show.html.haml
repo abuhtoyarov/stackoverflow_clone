@@ -11,5 +11,10 @@
   =form_for [@question, @answer], remote: true, html:{role: 'form'} do |f|
     .form-group
       =f.label :body
-      =f.text_area :body, class: 'form-control'
+      =f.text_area :body, class: 'form-control'  
+      =f.fields_for :attachments do |att|
+        = render 'attachment_fields', f: att
+    %p=link_to_add_association "Add file", f, :attachments, class: 'btn btn-default'
+    %br
+
     =f.button 'Post Your Answer', class: 'btn btn-default'
