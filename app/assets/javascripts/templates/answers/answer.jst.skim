@@ -1,0 +1,5 @@
+.row
+  .answer.col-md-6 id="answer#{@answer.id}"
+    p= @answer.body
+    -if @answer.attachments
+      ul
