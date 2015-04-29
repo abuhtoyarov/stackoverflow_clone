@@ -1,5 +1,35 @@
 .row
   .answer.col-md-6 id="answer#{@answer.id}"
     p= @answer.body
-    -if @answer.attachments
+    -if @answer.attachments.length > 0
       ul
+        - for att in @answer.attachments
+          li
+            a href=att.url = att.filename
+
+    -if @answer.current_user_id == @answer.user.id
+      p
+        a href='#' class='edit-answer-link' data-answer-id="#{@answer.id}" Edit
+      .answer-edit-form
+        form id="edit_answer_#{@answer.id}" action="#{@answer.path}" class="edit_answer" data-remote="true" enctype="multipart/form-data" method="post" accept-charset="UTF-8"
+          div style="display:none"  
+          input name="utf8" type="hidden" value="✓"
+          input name="_method" type="hidden" value="patch"
+          label for="answer_body" Body
+          textarea id="answer_body" name="answer[body]" = @answer.body
+          .attachments-form
+            - for att, i in @answer.attachments
+              .nested-fields
+                label for="answer_attachments_attributes_#{i}_file" File
+                input id="answer_attachments_attributes_#{i}_file" name="answer[attachments_attributes][#{i}][file]" type="file"
+                input disabled="disabled" id="answer_attachments_attributes_#{i}_file" name="answer[attachments_attributes][#{i}][file]" type="text" value="#{att.filename}"
+                input id="answer_attachments_attributes_#{i}__destroy" name="answer[attachments_attributes][#{i}][_destroy]" type="hidden" value="false"
+                a class="glyphicon glyphicon-remove remove_fields existing" href="#" Delete
+              input id="answer_attachments_attributes_#{i}_id" name="answer[attachments_attributes][#{i}][id]" type="hidden" value="#{att.id}"
+          p
+            a class="btn btn-default add_fields" data-association-insertion-template="<div class='nested-fields'><label for=answer_attachments_attributes_new_attachments_file>File</label><input id=answer_attachments_attributes_new_attachments_file name=answer[attachments_attributes][new_attachments][file] type=file /><input disabled=disabled id=answer_attachments_attributes_new_attachments_file name=answer[attachments_attributes][new_attachments][file] type=text /><input id=answer_attachments_attributes_new_attachments__destroy name=answer[attachments_attributes][new_attachments][_destroy] type=hidden value=false /><a class='glyphicon glyphicon-remove' remove_fields dynamic href=#>Delete</a></div>" data-association="attachment" data-associations="attachments" href="#" Add file
+          br
+          input name="commit" type="submit" value="Submit"
+      p
+        a data-method="delete" data-remote="true" href="#{@answer.path}" rel="nofollow" Delete Answer 
+  hr
