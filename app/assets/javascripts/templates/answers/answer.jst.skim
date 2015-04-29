@@ -10,6 +10,7 @@
     -if @answer.current_user_id == @answer.user.id
       p
         a href='#' class='edit-answer-link' data-answer-id="#{@answer.id}" Edit
+      .answer-error-edit
       .answer-edit-form
         form id="edit_answer_#{@answer.id}" action="#{@answer.path}" class="edit_answer" data-remote="true" enctype="multipart/form-data" method="post" accept-charset="UTF-8"
           div style="display:none"  

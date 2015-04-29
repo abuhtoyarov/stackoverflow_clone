@@ -100,7 +100,7 @@ RSpec.describe AnswersController, type: :controller do
             id: answer,
             answer: new_answer.attributes,
             question_id: answer.question,
-            format: 'js'
+            format: 'json'
           )
           answer.reload
           expect(answer.body).to eq new_answer.body
@@ -114,7 +114,7 @@ RSpec.describe AnswersController, type: :controller do
             id: antoher_user_answer,
             answer: new_answer.attributes,
             question_id: antoher_user_answer.question,
-            format: 'js'
+            format: 'json'
           )
           antoher_user_answer.reload
           expect(antoher_user_answer.body).to_not eq new_answer.body
@@ -129,7 +129,7 @@ RSpec.describe AnswersController, type: :controller do
           id: answer,
           answer: new_answer.attributes,
           question_id: answer.question,
-          format: 'js'
+          format: 'json'
         )
         answer.reload
         expect(answer.body).to_not eq new_answer.body

@@ -5,13 +5,15 @@ $ ->
   $('form.new_answer').bind 'ajax:success', (e, data, status, xhr) ->
     answer = $.parseJSON(xhr.responseText)
     $('.answers').append(JST["templates/answers/answer"]({answer: answer}))
+  .bind 'ajax:error', (e, xhr, status, error) ->
+    errors = $.parseJSON(xhr.responseText)
+    $.each errors, (index, value) ->
+      $('.answers-error').append(value)
 
-
-# $ ->
-#   $('form.new_answer').bind 'ajax:success', (e, data, status, xhr) ->
-#     answer = $.parseJSON(xhr.responseText)
-#     $('.answers').append(answer.body)
-#   .bind 'ajax:error', (e, xhr, status, error) ->
-#     errors = $.parseJSON(xhr.responseText)
-#     $.each errors, (index, value) ->
-#       $('.answers-error').append(value)
+  $('form.edit_answer').bind 'ajax:success', (e, data, status, xhr) ->
+    answer = $.parseJSON(xhr.responseText)
+    $("#answer#{answer.id}").replaceWith(JST["templates/answers/answer"]({answer: answer}))
+  .bind 'ajax:error', (e, xhr, status, error) ->
+    errors = $.parseJSON(xhr.responseText)
+    $.each errors, (index, value) ->
+      $('.answer-error-edit').append(value)

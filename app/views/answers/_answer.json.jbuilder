@@ -1,5 +1,5 @@
-json.extract! @answer, :id, :question_id, :body
-json.user @answer.user, :id, :email
+json.extract! @answer, :id, :body
+json.user @answer.user, :id
 json.current_user_id current_user.id
 json.path url_for([@question, @answer])
 

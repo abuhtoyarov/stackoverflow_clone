@@ -8,14 +8,15 @@
 
       - if current_user && current_user.owner?(answer)
         %p=link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-        -if answer.errors.any?
-          %p Your answer couldn't be updated. Please see the errors:
-          %ul
-            - answer.errors.full_messages.each do |msg|
-              %li= msg
+        .answer-error-edit
+          -if answer.errors.any?
+            %p Your answer couldn't be updated. Please see the errors:
+            %ul
+              - answer.errors.full_messages.each do |msg|
+                %li= msg
 
         .answer-edit-form
-          =form_for [@question, answer], remote: true do |f|
+          =form_for [@question, answer], remote: true, data: { type: :json } do |f|
             =f.label :body
             =f.text_area  :body
             .attachments-form
