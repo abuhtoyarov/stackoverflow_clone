@@ -23,5 +23,11 @@ FactoryGirl.define do
         create_list :answer, 3, question: question
       end
     end
+
+    factory :question_with_votes do
+      after :create do |question|
+        create_list :vote, 3, votable: question
+      end
+    end
   end
 end

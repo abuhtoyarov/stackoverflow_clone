@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :questions do
+    member do
+      patch 'voteup'
+      patch 'votedown'
+      patch 'unvote'
+    end
     resources :answers do
       patch 'accept', on: :member
     end

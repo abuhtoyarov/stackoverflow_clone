@@ -1,0 +1,7 @@
+.votes
+  - resource_klass = resource.class.to_s.downcase
+  =link_to "Vote up", eval("voteup_#{resource_klass}_path(resource)"), method: :patch, remote: true, data: {type: :json}
+  =link_to "Vote down", eval("votedown_#{resource_klass}_path(resource)"), method: :patch, remote: true, data: {type: :json}
+  =link_to "Unvote", eval("unvote_#{resource_klass}_path(resource)"), method: :patch, remote: true, data: {type: :json}
+.score
+  %p= resource.score

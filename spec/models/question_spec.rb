@@ -9,4 +9,12 @@ RSpec.describe Question, type: :model do
   it { should belong_to(:user) }
   it { should have_many(:attachments).dependent(:destroy) }
   it { should accept_nested_attributes_for(:attachments) }
+  it { should have_many(:votes).dependent(:destroy) }
+
+  describe '#score' do
+    let(:question) { create(:question_with_votes) }
+    it 'should show correct total points' do
+      expect(question.score).to eq question.votes.inject(0){ |sum, vote| sum + vote.points }
+    end
+  end
 end
