@@ -191,19 +191,19 @@ RSpec.describe QuestionsController, type: :controller do
 
       context 'another user question' do
         it 'decrease question votes' do
-          expect(patch :votedown, id: question, format: :json).to change(question.votes, :count).by(1)
+          expect { patch :votedown, id: question, format: :json }.to change(question.votes, :count).by(1)
         end
       end
       context 'user question' do
         it 'not change votes' do
-          expect(patch :votedown, id: user_question, format: :json).to_not change(question.votes, :count)
+          expect {patch :votedown, id: user_question, format: :json }.to_not change(question.votes, :count)
         end
       end
     end
 
     context 'unauth user' do
       it 'not change votes' do
-        expect(patch :votedown, id: question, format: :json).to_not change(question.votes, :count)
+        expect { patch :votedown, id: question, format: :json }.to_not change(question.votes, :count)
       end
     end
   end
@@ -211,23 +211,19 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #unvote' do
     context 'auth user' do
       sign_in_user
-      let!(:user_question) { create(:question, user_id: @user.id) }
-
+      let!(:question) { create(:question) }
+      let!(:vote) { create(:vote, user_id: @user.id, votable: question) }
       context 'another user question' do
         it 'decrease question votes' do
-          expect(patch :votedown, id: question, format: :json).to change(question.votes, :count).by(-1)
-        end
-      end
-      context 'user question' do
-        it 'not change votes' do
-          expect(patch :votedown, id: user_question, format: :json).to_not change(question.votes, :count)
+          expect { patch :unvote, id: question, format: :json }.to change(question.votes, :count).by(-1)
         end
       end
     end
 
     context 'unauth user' do
+      let(:vote) { create(:vote, question: question) }
       it 'not change votes' do
-        expect(patch :votedown, id: question, format: :json).to_not change(question.votes, :count)
+        expect { patch :unvote, id: question, format: :json }.to_not change(question.votes, :count)
       end
     end
   end

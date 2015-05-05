@@ -7,9 +7,15 @@ class Vote < ActiveRecord::Base
 
   DEF_POINT = 1
 
-  def voteup(user)
+  def vote(user, option)
     self.user_id = user.id
-    self.points = DEF_POINT
+    if option == :up
+      self.points = DEF_POINT
+    elsif option == :down
+      self.points = -1 * DEF_POINT
+    else
+      return
+    end
     save
   end
 end

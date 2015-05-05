@@ -12,7 +12,8 @@ RSpec.describe Question, type: :model do
   it { should have_many(:votes).dependent(:destroy) }
 
   describe '#score' do
-    let(:question) { create(:question_with_votes) }
+    let!(:question) { create(:question_with_votes) }
+    let!(:vote) { create(:vote, points: -1, votable: question) }
     it 'should show correct total points' do
       expect(question.score).to eq question.votes.inject(0){ |sum, vote| sum + vote.points }
     end

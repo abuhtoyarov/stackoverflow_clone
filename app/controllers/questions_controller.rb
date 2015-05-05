@@ -48,8 +48,30 @@ class QuestionsController < ApplicationController
   def voteup
     @vote = @question.votes.build
     respond_to do |format|
-      if @vote.voteup(current_user)
-        format.json { render json: @vote }
+      if @vote.vote(current_user, :up)
+        format.json { render @vote }
+      else
+        format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def votedown
+    @vote = @question.votes.build
+    respond_to do |format|
+      if @vote.vote(current_user, :down)
+        format.json { render @vote }
+      else
+        format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def unvote
+    @vote = @question.votes.find_by(user_id: current_user)
+    respond_to do |format|
+      if @vote.delete
+        format.json { render @vote }
       else
         format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity }
       end
