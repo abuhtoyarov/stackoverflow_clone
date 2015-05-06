@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  include Voted
+
   before_action :authenticate_user!, except: [:show, :index]
   before_action :find_question, except: [:index, :new, :create]
   before_action :auth_user_vote, only: [:voteup, :votedown]
@@ -45,39 +47,6 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def voteup
-    @vote = @question.votes.build
-    respond_to do |format|
-      if @vote.vote(current_user, :up)
-        format.json { render @vote }
-      else
-        format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def votedown
-    @vote = @question.votes.build
-    respond_to do |format|
-      if @vote.vote(current_user, :down)
-        format.json { render @vote }
-      else
-        format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def unvote
-    @vote = @question.votes.find_by(user_id: current_user)
-    respond_to do |format|
-      if @vote.delete
-        format.json { render @vote }
-      else
-        format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity }
-      end
-    end
-  end
-
   private
 
   def find_question
@@ -86,11 +55,5 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, attachments_attributes: [:id, :file, :_destroy])
-  end
-
-  def auth_user_vote
-    return if current_user.can_vote?(@question)
-    flash[:error] = "You can't vote. Login or unvote first"
-    render @question
   end
 end
