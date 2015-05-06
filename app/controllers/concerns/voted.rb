@@ -47,7 +47,7 @@ module Voted
   end
 
   def auth_user_vote
-    return if current_user.can_vote?(@resource)
+    return if current_user && current_user.can_vote?(@resource)
     flash[:error] = "You can't vote. Login or unvote first"
     render @resource
   end

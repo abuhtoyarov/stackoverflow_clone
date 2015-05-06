@@ -7,7 +7,12 @@ Rails.application.routes.draw do
       patch 'unvote'
     end
     resources :answers do
-      patch 'accept', on: :member
+      member do
+        patch 'accept'
+        patch 'voteup'
+        patch 'votedown'
+        patch 'unvote'
+      end
     end
   end
   root 'questions#index'
