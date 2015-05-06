@@ -2,8 +2,8 @@ class AnswersController < ApplicationController
   include Voted
 
   before_action :authenticate_user!
-  before_action :find_question
   before_action :find_answer, except: [:create]
+  before_action :find_question, only: [:create, :accept]
   before_action :user_authorized?, only: [:update, :destroy]
 
   def create
@@ -46,11 +46,11 @@ class AnswersController < ApplicationController
   end
 
   def find_question
-    @question = Question.find(params[:question_id])
+    @question = params.has_key?(:question_id) ? Question.find(params[:question_id]) : @answer.question
   end
 
   def find_answer
-    @answer = @question.answers.find(params[:id])
+    @answer = Answer.find(params[:id])
   end
 
   def user_authorized?

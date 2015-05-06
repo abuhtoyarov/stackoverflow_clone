@@ -58,7 +58,7 @@ feature 'Authenticate user can vote answer', %q{
 
     scenario 'try to vote up his own answer', js: true do
       visit question_path(user_answer.question)
-      within "#answer#{answer.id}" do
+      within "#answer#{user_answer.id}" do
         expect(page).to_not have_link 'Vote up'
         expect(page).to_not have_link 'Vote down'
       end

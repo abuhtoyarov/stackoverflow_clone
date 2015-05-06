@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       patch 'votedown'
       patch 'unvote'
     end
-    resources :answers do
+    resources :answers, shallow: true do
       member do
         patch 'accept'
         patch 'voteup'
