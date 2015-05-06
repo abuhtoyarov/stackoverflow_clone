@@ -1,7 +1,7 @@
 .votes
   .votes-error
   - resource_klass = resource.class.to_s.downcase
-  - if current_user
+  - if current_user && !current_user.owner?(resource)
     - if current_user.can_vote?(resource)
       =link_to "Vote up", eval("voteup_#{resource_klass}_path(resource)"), method: :patch, remote: true, data: {type: :json}
       =link_to "Vote down", eval("votedown_#{resource_klass}_path(resource)"), method: :patch, remote: true, data: {type: :json}

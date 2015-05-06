@@ -59,10 +59,8 @@ feature 'Authenticate user can vote question', %q{
     scenario 'try to vote up his own question', js: true do
       visit question_path(user_question)
       within '.question' do
-        click_on 'Vote up'
-        within '.score' do
-          expect(page).to have_content '0'
-        end
+        expect(page).to_not have_link 'Vote up'
+        expect(page).to_not have_link 'Vote down'
       end
     end
 
@@ -71,7 +69,9 @@ feature 'Authenticate user can vote question', %q{
       within '.question' do
         click_on 'Vote up'
       end
+      click_on 'Sign Out'
       sign_in(another_user)
+      visit question_path(question)
       within '.question' do
         click_on 'Vote up'
         within '.score' do
