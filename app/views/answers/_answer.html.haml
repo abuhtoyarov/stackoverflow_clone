@@ -5,6 +5,7 @@
       %ul
         - answer.attachments.each do |att|
           %li= link_to att.file.filename, att.file.url
+      / =render 'shared/votes', resource: @answer
 
       - if current_user && current_user.owner?(answer)
         %p=link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
