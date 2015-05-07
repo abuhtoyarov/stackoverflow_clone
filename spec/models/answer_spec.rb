@@ -32,7 +32,7 @@ RSpec.describe Answer, type: :model do
     let!(:answer) { create(:answer_with_votes) }
     let!(:vote) { create(:vote, points: -1, votable: answer) }
     it 'should show correct total points' do
-      expect(answer.score).to eq answer.votes.inject(0){ |sum, vote| sum + vote.points }
+      expect(answer.score).to eq 2
     end
   end
 end

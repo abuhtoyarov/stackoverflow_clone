@@ -160,7 +160,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'PATCH #voteup' do
+  describe 'PATCH #vote_up' do
     context 'auth user' do
       sign_in_user
       let!(:user_question) { create(:question, user_id: @user.id) }
@@ -168,7 +168,7 @@ RSpec.describe QuestionsController, type: :controller do
       context 'another user question' do
         it 'increase question votes' do
           expect {
-            patch :voteup,
+            patch :vote_up,
             id: question,
             format: :json
           }.to change(question.votes, :count).by(1)
@@ -177,7 +177,7 @@ RSpec.describe QuestionsController, type: :controller do
       context 'user question' do
         it 'not change votes' do
           expect {
-            patch :voteup,
+            patch :vote_up,
             id: user_question,
             format: :json
           }.to_not change(question.votes, :count)
@@ -188,7 +188,7 @@ RSpec.describe QuestionsController, type: :controller do
     context 'unauth user' do
       it 'not change votes' do
         expect {
-          patch :voteup,
+          patch :vote_up,
           id: question,
           format: :json
         }.to_not change(question.votes, :count)
@@ -196,7 +196,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'PATCH #votedown' do
+  describe 'PATCH #vote_down' do
     context 'auth user' do
       sign_in_user
       let!(:user_question) { create(:question, user_id: @user.id) }
@@ -204,7 +204,7 @@ RSpec.describe QuestionsController, type: :controller do
       context 'another user question' do
         it 'decrease question votes' do
           expect {
-            patch :votedown,
+            patch :vote_down,
             id: question,
             format: :json
           }.to change(question.votes, :count).by(1)
@@ -213,7 +213,7 @@ RSpec.describe QuestionsController, type: :controller do
       context 'user question' do
         it 'not change votes' do
           expect {
-            patch :votedown,
+            patch :vote_down,
             id: user_question,
             format: :json
           }.to_not change(question.votes, :count)
@@ -224,7 +224,7 @@ RSpec.describe QuestionsController, type: :controller do
     context 'unauth user' do
       it 'not change votes' do
         expect {
-          patch :votedown,
+          patch :vote_down,
           id: question,
           format: :json
         }.to_not change(question.votes, :count)

@@ -2,15 +2,15 @@ Rails.application.routes.draw do
   devise_for :users
   resources :questions do
     member do
-      patch 'voteup'
-      patch 'votedown'
+      patch 'vote_up'
+      patch 'vote_down'
       patch 'unvote'
     end
     resources :answers, shallow: true do
       member do
         patch 'accept'
-        patch 'voteup'
-        patch 'votedown'
+        patch 'vote_up'
+        patch 'vote_down'
         patch 'unvote'
       end
     end

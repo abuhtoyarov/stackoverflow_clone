@@ -3,14 +3,14 @@ require 'active_support/concern'
 module Voted
   extend ActiveSupport::Concern
   included do
-    before_action :set_resource, only: [:voteup, :votedown, :unvote]
-    before_action :auth_user_vote, only: [:voteup, :votedown]
+    before_action :set_resource, only: [:vote_up, :vote_down, :unvote]
+    before_action :auth_user_vote, only: [:vote_up, :vote_down]
   end
 
-  def voteup
+  def vote_up
     @vote = @resource.votes.build
     respond_to do |format|
-      if @vote.vote(current_user, :up)
+      if @vote.up(current_user)
         format.json { render @vote }
       else
         format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity }
@@ -18,10 +18,10 @@ module Voted
     end
   end
 
-  def votedown
+  def vote_down
     @vote = @resource.votes.build
     respond_to do |format|
-      if @vote.vote(current_user, :down)
+      if @vote.down(current_user)
         format.json { render @vote }
       else
         format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity }

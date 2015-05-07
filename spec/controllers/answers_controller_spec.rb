@@ -186,7 +186,7 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'PATCH #voteup' do
+  describe 'PATCH #vote_up' do
     context 'auth user' do
       sign_in_user
       let!(:user_answer) { create(:answer, user_id: @user.id) }
@@ -194,7 +194,7 @@ RSpec.describe AnswersController, type: :controller do
       context 'another user answer' do
         it 'increase answer votes' do
           expect {
-            patch :voteup,
+            patch :vote_up,
             id: answer,
             question_id: answer.question,
             format: :json
@@ -204,7 +204,7 @@ RSpec.describe AnswersController, type: :controller do
       context 'user answer' do
         it 'not change votes' do
           expect {
-            patch :voteup,
+            patch :vote_up,
             id: user_answer,
             question_id: answer.question,
             format: :json
@@ -216,7 +216,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'unauth user' do
       it 'not change votes' do
         expect {
-          patch :voteup,
+          patch :vote_up,
           id: answer,
           question_id: answer.question,
           format: :json
@@ -225,7 +225,7 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'PATCH #votedown' do
+  describe 'PATCH #vote_down' do
     context 'auth user' do
       sign_in_user
       let!(:user_answer) { create(:answer, user_id: @user.id) }
@@ -233,7 +233,7 @@ RSpec.describe AnswersController, type: :controller do
       context 'another user answer' do
         it 'decrease answer votes' do
           expect {
-            patch :votedown,
+            patch :vote_down,
             id: answer,
             question_id: answer.question,
             format: :json
@@ -243,7 +243,7 @@ RSpec.describe AnswersController, type: :controller do
       context 'user answer' do
         it 'not change votes' do
           expect {
-            patch :votedown,
+            patch :vote_down,
             id: user_answer,
             question_id: answer.question,
             format: :json
@@ -255,7 +255,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'unauth user' do
       it 'not change votes' do
         expect {
-          patch :votedown,
+          patch :vote_down,
           id: answer,
           question_id: answer.question,
           format: :json

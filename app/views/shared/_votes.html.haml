@@ -1,11 +1,10 @@
 .votes
   .votes-error
-  - resource_klass = resource.class.to_s.downcase
   - if current_user && !current_user.owner?(resource)
     - if current_user.can_vote?(resource)
-      =link_to "Vote up", eval("voteup_#{resource_klass}_path(resource)"), method: :patch, remote: true, data: {type: :json}
-      =link_to "Vote down", eval("votedown_#{resource_klass}_path(resource)"), method: :patch, remote: true, data: {type: :json}
+      =link_to "Vote up", polymorphic_path([:vote_up, resource]), method: :patch, remote: true, data: {type: :json}
+      =link_to "Vote down", polymorphic_path([:vote_down, resource]), method: :patch, remote: true, data: {type: :json}
     - else
-      =link_to "Unvote", eval("unvote_#{resource_klass}_path(resource)"), method: :patch, remote: true, data: {type: :json}
+      =link_to "Unvote", polymorphic_path([:unvote, resource]), method: :patch, remote: true, data: {type: :json}
   .score
     %p= resource.score
