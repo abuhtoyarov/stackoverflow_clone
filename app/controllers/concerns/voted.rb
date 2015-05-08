@@ -10,10 +10,12 @@ module Voted
   def vote_up
     @vote = @resource.votes.build
     respond_to do |format|
-      if @vote.up(current_user)
-        format.json { render @vote }
-      else
-        format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity }
+      format.json do
+        if @vote.up(current_user)
+          render @vote
+        else
+          render json: @vote.errors.full_messages, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -21,10 +23,12 @@ module Voted
   def vote_down
     @vote = @resource.votes.build
     respond_to do |format|
-      if @vote.down(current_user)
-        format.json { render @vote }
-      else
-        format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity }
+      format.json do
+        if @vote.down(current_user)
+          render @vote
+        else
+          render json: @vote.errors.full_messages, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -32,10 +36,12 @@ module Voted
   def unvote
     @vote = @resource.votes.find_by(user_id: current_user)
     respond_to do |format|
-      if @vote.delete
-        format.json { render @vote }
-      else
-        format.json { render json: @vote.errors.full_messages, status: :unprocessable_entity }
+      format.json do
+        if @vote.delete
+          render @vote
+        else
+          render json: @vote.errors.full_messages, status: :unprocessable_entity
+        end
       end
     end
   end
