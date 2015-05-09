@@ -159,4 +159,103 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #vote_up' do
+    context 'auth user' do
+      sign_in_user
+      let!(:user_question) { create(:question, user_id: @user.id) }
+
+      context 'another user question' do
+        it 'increase question votes' do
+          expect {
+            patch :vote_up,
+            id: question,
+            format: :json
+          }.to change(question.votes, :count).by(1)
+        end
+      end
+      context 'user question' do
+        it 'not change votes' do
+          expect {
+            patch :vote_up,
+            id: user_question,
+            format: :json
+          }.to_not change(question.votes, :count)
+        end
+      end
+    end
+
+    context 'unauth user' do
+      it 'not change votes' do
+        expect {
+          patch :vote_up,
+          id: question,
+          format: :json
+        }.to_not change(question.votes, :count)
+      end
+    end
+  end
+
+  describe 'PATCH #vote_down' do
+    context 'auth user' do
+      sign_in_user
+      let!(:user_question) { create(:question, user_id: @user.id) }
+
+      context 'another user question' do
+        it 'decrease question votes' do
+          expect {
+            patch :vote_down,
+            id: question,
+            format: :json
+          }.to change(question.votes, :count).by(1)
+        end
+      end
+      context 'user question' do
+        it 'not change votes' do
+          expect {
+            patch :vote_down,
+            id: user_question,
+            format: :json
+          }.to_not change(question.votes, :count)
+        end
+      end
+    end
+
+    context 'unauth user' do
+      it 'not change votes' do
+        expect {
+          patch :vote_down,
+          id: question,
+          format: :json
+        }.to_not change(question.votes, :count)
+      end
+    end
+  end
+
+  describe 'PATCH #unvote' do
+    context 'auth user' do
+      sign_in_user
+      let!(:question) { create(:question) }
+      let!(:vote) { create(:vote, user_id: @user.id, votable: question) }
+      context 'another user question' do
+        it 'decrease question votes' do
+          expect {
+            patch :unvote,
+            id: question,
+            format: :json
+          }.to change(question.votes, :count).by(-1)
+        end
+      end
+    end
+
+    context 'unauth user' do
+      let(:vote) { create(:vote, question: question) }
+      it 'not change votes' do
+        expect { patch :unvote,
+          id: question,
+          format: :json
+        }.to_not change(question.votes, :count)
+      end
+    end
+  end
 end

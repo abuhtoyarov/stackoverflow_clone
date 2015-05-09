@@ -1,0 +1,9 @@
+.votes
+  .votes-error
+  - if @votes.can_vote
+    a href="#{@votes.resource_path}/vote_up" data-method="patch" data-remote="true" data-type="json" rel="nofollow" Vote up
+    a href="#{@votes.resource_path}/vote_down" data-method="patch" data-remote="true" data-type="json" rel="nofollow" Vote down
+  - else
+    a href="#{@votes.resource_path}/unvote" data-method="patch" data-remote="true" data-type="json" rel="nofollow" Unvote
+  .score
+    p= @votes.score

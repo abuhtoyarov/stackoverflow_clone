@@ -1,4 +1,6 @@
 class Answer < ActiveRecord::Base
+  include Votable
+
   scope :by_rating, -> { order(accepted: :desc) }
 
   has_many :attachments, as: :attachable
@@ -14,8 +16,4 @@ class Answer < ActiveRecord::Base
     question.answers.update_all(accepted: false)
     update(accepted: true)
   end
-
-  # def accepted?
-  #   is_accepted
-  # end
 end

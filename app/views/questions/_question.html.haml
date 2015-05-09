@@ -1,6 +1,7 @@
 .question
   %h2= @question.title
   %p.lead= @question.body
+  =render 'shared/votes', resource: @question
   %ul
   - @question.attachments.each do |att|
     %li= link_to att.file.filename, att.file.url

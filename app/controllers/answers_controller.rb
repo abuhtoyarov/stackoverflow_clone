@@ -1,24 +1,41 @@
 class AnswersController < ApplicationController
+  include Voted
+
   before_action :authenticate_user!
-  before_action :find_question
-  before_action :find_answer, only: [:update, :destroy, :accept]
+  before_action :find_answer, except: [:create]
+  before_action :find_question, only: [:create, :accept]
+  before_action :user_authorized?, only: [:update, :destroy]
 
   def create
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
-    @answer.save
+    respond_to do |format|
+      if @answer.save
+        format.html { render @answer }
+        format.json { render @answer }
+      else
+        format.html { render @answer }
+        format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
+      end
+    end
   end
 
   def update
-    @answer.update(answer_params) if current_user.owner?(@answer)
+    respond_to do |format|
+      if @answer.update(answer_params)
+        format.json { render @answer }
+      else
+        format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy
-    @answer.destroy! if current_user.owner?(@answer)
+    @answer.destroy!
   end
 
   def accept
-    @answer.accept if current_user.id == @question.user_id
+    @answer.accept if current_user.owner?(@question)
     @answers = @question.answers.by_rating
   end
 
@@ -29,10 +46,16 @@ class AnswersController < ApplicationController
   end
 
   def find_question
-    @question = Question.find(params[:question_id])
+    @question = params.has_key?(:question_id) ? Question.find(params[:question_id]) : @answer.question
   end
 
   def find_answer
-    @answer = @question.answers.find(params[:id])
+    @answer = Answer.find(params[:id])
+  end
+
+  def user_authorized?
+    return if current_user.owner?(@answer)
+    flash[:error] = 'Permission denied'
+    redirect_to root_path
   end
 end

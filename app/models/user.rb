@@ -7,4 +7,8 @@ class User < ActiveRecord::Base
   def owner?(obj)
     obj.try(:user_id) && obj.user_id == id
   end
+
+  def can_vote?(obj)
+    !owner?(obj) && obj.votes.find_by(user_id: id).nil?
+  end
 end

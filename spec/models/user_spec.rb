@@ -27,4 +27,24 @@ RSpec.describe User, type: :model do
       expect(user.owner?(another_answer)).to eq false
     end
   end
+
+  describe '#can_vote?' do
+    let!(:user) { create(:user) }
+    let(:question) { create(:question) }
+    let(:user_question) { create(:question, user: user) }
+    let!(:voted_question) { create(:question) }
+    let!(:vote) { create(:vote, user: user, votable: voted_question) }
+
+    it 'with another unvoted user question' do
+      expect(user.can_vote?(question)).to eq true
+    end
+
+    it 'with his question' do
+      expect(user.can_vote?(user_question)).to eq false
+    end
+
+    it 'with priviosly self voted question' do
+      expect(user.can_vote?(voted_question)).to eq false
+    end
+  end
 end

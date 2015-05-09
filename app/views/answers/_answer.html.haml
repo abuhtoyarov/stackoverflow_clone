@@ -5,17 +5,19 @@
       %ul
         - answer.attachments.each do |att|
           %li= link_to att.file.filename, att.file.url
+      =render 'shared/votes', resource: answer
 
       - if current_user && current_user.owner?(answer)
         %p=link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-        -if answer.errors.any?
-          %p Your answer couldn't be updated. Please see the errors:
-          %ul
-            - answer.errors.full_messages.each do |msg|
-              %li= msg
+        .answer-error-edit
+          -if answer.errors.any?
+            %p Your answer couldn't be updated. Please see the errors:
+            %ul
+              - answer.errors.full_messages.each do |msg|
+                %li= msg
 
         .answer-edit-form
-          =form_for [@question, answer], remote: true do |f|
+          =form_for answer, remote: true, data: { type: :json } do |f|
             =f.label :body
             =f.text_area  :body
             .attachments-form
@@ -26,12 +28,12 @@
             =f.submit 'Submit'
 
         %p=link_to 'Delete Answer', 
-          question_answer_path(@question, answer), 
+          answer_path(answer), 
           method: :delete, remote: true
 
       - if current_user && current_user.owner?(@question)
         %p.accept-link=link_to 'Accept answer', 
-          accept_question_answer_path(@question, answer),
+          accept_answer_path(answer),
           method: :patch,
           remote: true
       - if answer.accepted?

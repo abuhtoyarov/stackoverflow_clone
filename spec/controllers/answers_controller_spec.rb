@@ -17,7 +17,7 @@ RSpec.describe AnswersController, type: :controller do
             :create,
             answer: attributes_for(:answer),
             question_id: question,
-            format: 'js'
+            format: 'json'
           )
         }.to change(question.answers, :count).by(1)
       end
@@ -26,16 +26,16 @@ RSpec.describe AnswersController, type: :controller do
           :create,
           answer: attributes_for(:answer),
           question_id: question,
-          format: 'js'
+          format: 'json'
         )
-        expect(response).to render_template 'answers/create'
+        expect(response.content_type).to eq('application/json')
       end
       it 'assign new answer to current user' do
         post(
           :create,
           answer: attributes_for(:answer),
           question_id: question,
-          format: 'js'
+          format: 'json'
         )
         expect(assigns(:answer).user).to be(subject.current_user)
       end
@@ -48,7 +48,7 @@ RSpec.describe AnswersController, type: :controller do
             :create,
             answer: attributes_for(:invalid_answer),
             question_id: question,
-            format: 'js'
+            format: 'json'
           )
         }.to_not change(Answer, :count)
       end
@@ -57,9 +57,9 @@ RSpec.describe AnswersController, type: :controller do
           :create,
           answer: attributes_for(:invalid_answer),
           question_id: question,
-          format: 'js'
+          format: 'json'
         )
-        expect(response).to render_template 'answers/create'
+        expect(response.content_type).to eq('application/json')
       end
     end
   end
@@ -100,7 +100,7 @@ RSpec.describe AnswersController, type: :controller do
             id: answer,
             answer: new_answer.attributes,
             question_id: answer.question,
-            format: 'js'
+            format: 'json'
           )
           answer.reload
           expect(answer.body).to eq new_answer.body
@@ -114,7 +114,7 @@ RSpec.describe AnswersController, type: :controller do
             id: antoher_user_answer,
             answer: new_answer.attributes,
             question_id: antoher_user_answer.question,
-            format: 'js'
+            format: 'json'
           )
           antoher_user_answer.reload
           expect(antoher_user_answer.body).to_not eq new_answer.body
@@ -129,7 +129,7 @@ RSpec.describe AnswersController, type: :controller do
           id: answer,
           answer: new_answer.attributes,
           question_id: answer.question,
-          format: 'js'
+          format: 'json'
         )
         answer.reload
         expect(answer.body).to_not eq new_answer.body
@@ -182,6 +182,113 @@ RSpec.describe AnswersController, type: :controller do
         )
         answer.reload
         expect(answer.accepted?).to eq false
+      end
+    end
+  end
+
+  describe 'PATCH #vote_up' do
+    context 'auth user' do
+      sign_in_user
+      let!(:user_answer) { create(:answer, user_id: @user.id) }
+
+      context 'another user answer' do
+        it 'increase answer votes' do
+          expect {
+            patch :vote_up,
+            id: answer,
+            question_id: answer.question,
+            format: :json
+          }.to change(answer.votes, :count).by(1)
+        end
+      end
+      context 'user answer' do
+        it 'not change votes' do
+          expect {
+            patch :vote_up,
+            id: user_answer,
+            question_id: answer.question,
+            format: :json
+          }.to_not change(answer.votes, :count)
+        end
+      end
+    end
+
+    context 'unauth user' do
+      it 'not change votes' do
+        expect {
+          patch :vote_up,
+          id: answer,
+          question_id: answer.question,
+          format: :json
+        }.to_not change(answer.votes, :count)
+      end
+    end
+  end
+
+  describe 'PATCH #vote_down' do
+    context 'auth user' do
+      sign_in_user
+      let!(:user_answer) { create(:answer, user_id: @user.id) }
+
+      context 'another user answer' do
+        it 'decrease answer votes' do
+          expect {
+            patch :vote_down,
+            id: answer,
+            question_id: answer.question,
+            format: :json
+          }.to change(answer.votes, :count).by(1)
+        end
+      end
+      context 'user answer' do
+        it 'not change votes' do
+          expect {
+            patch :vote_down,
+            id: user_answer,
+            question_id: answer.question,
+            format: :json
+          }.to_not change(answer.votes, :count)
+        end
+      end
+    end
+
+    context 'unauth user' do
+      it 'not change votes' do
+        expect {
+          patch :vote_down,
+          id: answer,
+          question_id: answer.question,
+          format: :json
+        }.to_not change(answer.votes, :count)
+      end
+    end
+  end
+
+  describe 'PATCH #unvote' do
+    context 'auth user' do
+      sign_in_user
+      let!(:answer) { create(:answer) }
+      let!(:vote) { create(:vote, user_id: @user.id, votable: answer) }
+      context 'another user answer' do
+        it 'decrease answer votes' do
+          expect {
+            patch :unvote,
+            id: answer,
+            question_id: answer.question,
+            format: :json
+          }.to change(answer.votes, :count).by(-1)
+        end
+      end
+    end
+
+    context 'unauth user' do
+      let(:vote) { create(:vote, answer: answer) }
+      it 'not change votes' do
+        expect { patch :unvote,
+          id: answer,
+          question_id: answer.question,
+          format: :json
+        }.to_not change(answer.votes, :count)
       end
     end
   end
