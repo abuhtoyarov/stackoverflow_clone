@@ -17,7 +17,7 @@ RSpec.describe AnswersController, type: :controller do
             :create,
             answer: attributes_for(:answer),
             question_id: question,
-            format: 'json'
+            format: 'js'
           )
         }.to change(question.answers, :count).by(1)
       end
@@ -26,16 +26,16 @@ RSpec.describe AnswersController, type: :controller do
           :create,
           answer: attributes_for(:answer),
           question_id: question,
-          format: 'json'
+          format: 'js'
         )
-        expect(response.content_type).to eq('application/json')
+        expect(response.content_type).to eq('text/javascript')
       end
       it 'assign new answer to current user' do
         post(
           :create,
           answer: attributes_for(:answer),
           question_id: question,
-          format: 'json'
+          format: 'js'
         )
         expect(assigns(:answer).user).to be(subject.current_user)
       end
@@ -48,7 +48,7 @@ RSpec.describe AnswersController, type: :controller do
             :create,
             answer: attributes_for(:invalid_answer),
             question_id: question,
-            format: 'json'
+            format: 'js'
           )
         }.to_not change(Answer, :count)
       end
@@ -57,9 +57,9 @@ RSpec.describe AnswersController, type: :controller do
           :create,
           answer: attributes_for(:invalid_answer),
           question_id: question,
-          format: 'json'
+          format: 'js'
         )
-        expect(response.content_type).to eq('application/json')
+        expect(response.content_type).to eq('text/javascript')
       end
     end
   end

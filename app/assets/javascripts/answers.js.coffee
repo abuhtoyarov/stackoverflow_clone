@@ -2,17 +2,23 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
-  $('form.new_answer,form.edit_answer').bind 'ajax:success', (e, data, status, xhr) ->
+  $('form.edit_answer').bind 'ajax:success', (e, data, status, xhr) ->
     answer = $.parseJSON(xhr.responseText)
     content = JST["templates/answers/answer"]({answer: answer})
-    if ($(this).is('form.new_answer'))
-      $('.answers').append(content)
-    else
-      $("#answer#{answer.id}").replaceWith(content)
+    $("#answer#{answer.id}").replaceWith(content)
   .bind 'ajax:error', (e, xhr, status, error) ->
     errors = $.parseJSON(xhr.responseText)
     $.each errors, (index, value) ->
       $('.answers-error').append(value)
+
+  createNewAnswerChannel()
+
+createNewAnswerChannel = ->
+  questionId = $('.answers').data('questionId')
+  PrivatePub.subscribe '/questions/' + questionId + '/answers', (data, channel) ->
+    answer = $.parseJSON(data['answer'])
+    content = JST["templates/answers/answer"]({answer: answer})
+    $('.answers').append(content)
 
 vote = (e, data, status, xhr) ->
   votes = $.parseJSON(xhr.responseText)

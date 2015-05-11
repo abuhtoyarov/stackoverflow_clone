@@ -27,7 +27,10 @@ gem 'carrierwave'
 # file uploads for ajax forms
 gem 'remotipart'
 # nested forms to add several object in a row
-gem "cocoon"
+gem 'cocoon'
+# comet messages through websockets
+gem 'private_pub'
+gem 'thin'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
