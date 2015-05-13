@@ -1,10 +1,13 @@
 =link_to 'Ask question', new_question_path, class: 'btn btn-default'
 -if @questions.any?
   %h1='Top Questions'
-  %ul.list-group
-    -@questions.each do |question|
-      %li.list-group-item
-        %span.badge= question.answers.count
-        =link_to question.title, question
+  %questions
+    %ul.list-group
+      -@questions.each do |question|
+        %li.list-group-item
+          %span.badge= question.answers.count
+          =link_to question.title, question
 -else
-  %h3 There are not questions. Ask something
+  %h3 There are no questions. Ask something
+
+=subscribe_to "/questions"
