@@ -15,7 +15,7 @@ class AnswersController < ApplicationController
           PrivatePub.publish_to "/questions/#{@question.id}/answers",
                         answer: render(template: 'answers/_answer.json.jbuilder')
         else
-          render :create
+          render :error
         end
       end
     end

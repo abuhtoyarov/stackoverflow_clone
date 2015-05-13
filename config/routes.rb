@@ -10,7 +10,10 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: :votable do
+    resources :comments, only: :create
+
     resources :answers, shallow: true, concerns: :votable do
+      resources :comments, only: :create
       patch 'accept', on: :member
     end
   end
