@@ -17,7 +17,7 @@ feature 'Authenticate user can vote answer', %q{
 
     scenario 'try to vote up another user answer', js: true do
       visit question_path(answer.question)
-      within "#answer#{answer.id}" do
+      within ".answer#answer#{answer.id}" do
         click_on 'Vote up'
         within '.score' do
           expect(page).to have_content '1'
@@ -27,7 +27,7 @@ feature 'Authenticate user can vote answer', %q{
 
     scenario 'try to vote down another user answer', js: true do
       visit question_path(answer.question)
-      within "#answer#{answer.id}" do
+      within ".answer#answer#{answer.id}" do
         click_on 'Vote down'
         within '.score' do
           expect(page).to have_content '-1'
@@ -37,7 +37,7 @@ feature 'Authenticate user can vote answer', %q{
 
     scenario 'try to vote up another user answer twice', js: true do
       visit question_path(answer.question)
-      within "#answer#{answer.id}" do
+      within ".answer#answer#{answer.id}" do
         click_on 'Vote up'
         expect(page).to_not have_link 'Vote up'
         expect(page).to_not have_link 'Vote down'
@@ -46,7 +46,7 @@ feature 'Authenticate user can vote answer', %q{
 
     scenario 'try to unvote and vote ones more', js: true do
       visit question_path(answer.question)
-      within "#answer#{answer.id}" do
+      within ".answer#answer#{answer.id}" do
         click_on 'Vote up'
         click_on 'Unvote'
         click_on 'Vote down'
@@ -58,7 +58,7 @@ feature 'Authenticate user can vote answer', %q{
 
     scenario 'try to vote up his own answer', js: true do
       visit question_path(user_answer.question)
-      within "#answer#{user_answer.id}" do
+      within ".answer#answer#{user_answer.id}" do
         expect(page).to_not have_link 'Vote up'
         expect(page).to_not have_link 'Vote down'
       end
@@ -66,13 +66,13 @@ feature 'Authenticate user can vote answer', %q{
 
     scenario 'sees correct score after vote', js: true do
       visit question_path(answer.question)
-      within "#answer#{answer.id}" do
+      within ".answer#answer#{answer.id}" do
         click_on 'Vote up'
       end
       click_on 'Sign Out'
       sign_in(another_user)
       visit question_path(answer.question)
-      within "#answer#{answer.id}" do
+      within ".answer#answer#{answer.id}" do
         click_on 'Vote up'
         within '.score' do
           expect(page).to have_content '2'
@@ -83,7 +83,7 @@ feature 'Authenticate user can vote answer', %q{
 
   scenario 'Guest user try vote up answer', js: true do
     visit question_path(answer.question)
-    within "#answer#{answer.id}" do
+    within ".answer#answer#{answer.id}" do
       expect(page).to_not have_link 'Vote up'
       expect(page).to_not have_link 'Vote down'
     end

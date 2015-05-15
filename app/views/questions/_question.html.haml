@@ -23,3 +23,5 @@
           %p=link_to_add_association "Add file", f, :attachments, class: 'btn btn-default'
           %br
           =f.button 'Submit', class: 'btn btn-default'
+  =render 'comments/index', resource: @question
+  =render 'comments/form', resource: @question

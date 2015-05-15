@@ -1,0 +1,2 @@
+.comment
+  p="#{@comment.body} - #{@comment.user_email}"

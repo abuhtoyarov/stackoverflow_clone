@@ -8,6 +8,7 @@ feature 'Authenticate user can comment a answer', %q{
   given(:user) { create :user }
   given(:question) { create :question, user: user }
   given!(:answer) { create :answer, user: user, question: question }
+  given(:comment) { create :comment }
 
   context 'Authenticated user' do
     before do
@@ -16,7 +17,7 @@ feature 'Authenticate user can comment a answer', %q{
     end
 
     scenario 'creates a comment', js: true do
-      within "#answer#{answer.id}" do
+      within ".answer#answer#{answer.id}" do
         click_on 'add a comment'
         fill_in 'comment', with: comment.body
         click_on 'Submit'
@@ -29,7 +30,7 @@ feature 'Authenticate user can comment a answer', %q{
     before { visit question_path(question) }
 
     scenario 'can not comment a answer' do
-      within "#answer#{answer.id}" do
+      within ".answer#answer#{answer.id}" do
         expect(page).not_to have_link 'add a comment'
       end
     end

@@ -10,6 +10,11 @@ ready = ->
     answer_id = $(this).data('answerId')
     $('#answer' + answer_id).find('.answer-edit-form').show()
 
+  # show form for comment
+  $('.comment-create-link').click ->
+    $(this).hide()
+    $(this).parent().find('.comment-create-form').show()
+    
   #comet listner
   PrivatePub.subscribe '/questions', (data, channel) ->
     question = $.parseJSON(data['question'])
