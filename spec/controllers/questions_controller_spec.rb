@@ -23,9 +23,6 @@ RSpec.describe QuestionsController, type: :controller do
     it 'assigns the new Answer to @answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
-    it 'assigns new Attachment to nested attachment for answer' do
-      expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
-    end
     it 'populates an array of answers' do
       expect(assigns(:answers)).to match_array [answer]
     end
@@ -39,10 +36,6 @@ RSpec.describe QuestionsController, type: :controller do
     before { get :new }
     it 'assigns new Question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
-    end
-
-    it 'assigns new Attachment to nested attachment for question' do
-      expect(assigns(:question).attachments.first).to be_a_new(Attachment)
     end
 
     it 'renders :new template' do
@@ -116,9 +109,9 @@ RSpec.describe QuestionsController, type: :controller do
           to_not change(Question, :count)
       end
 
-      it 'redirect to question' do
+      it 'redirect to root_path' do
         delete :destroy, id: another_user_question
-        expect(response).to redirect_to assigns(:question)
+        expect(response).to redirect_to root_path
       end
     end
   end

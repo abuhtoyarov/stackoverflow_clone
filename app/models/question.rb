@@ -10,4 +10,13 @@ class Question < ActiveRecord::Base
   validates :title, presence: true, length: { in: 15..255 }
   validates :body, presence: true
   validates :user_id, presence: true
+
+  def destroy
+    if answers.count == 0
+      super
+    else
+      errors[:base] << "Can't delete question with answers"
+      return self
+    end
+  end
 end

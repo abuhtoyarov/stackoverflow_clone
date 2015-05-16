@@ -18,6 +18,7 @@ feature 'User can attach file to answer', %q{
 
   scenario 'Auth user attach file to answer', js: true do
     fill_in 'Body', with: answer.body
+    click_on 'Add file'
     attach_file 'File', file
     click_on 'Post Your Answer'
     within '.answers' do
@@ -27,6 +28,7 @@ feature 'User can attach file to answer', %q{
 
   scenario 'Auth user attach several files to answer', js: true do
     fill_in 'Body', with: answer.body
+    click_on 'Add file'
     click_on 'Add file'
     inputs = page.all('input[type="file"]')
     inputs[0].set file

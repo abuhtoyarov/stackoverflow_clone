@@ -4,12 +4,7 @@
   =render 'answers'
 
 .answer_new.row
-  .answer-errors  
-    -if @answer.errors.any?
-      %p Your answer couldn't be submitted. Please see the errors:
-      %ul
-        - @answer.errors.full_messages.each do |msg|
-          %li= msg
+  .answer-errors
   =form_for [@question, @answer], remote: true, html:{role: 'form'} do |f|
     .form-group
       =f.label :body
