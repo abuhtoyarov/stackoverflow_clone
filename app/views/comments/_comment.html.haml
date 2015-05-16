@@ -1,2 +1,3 @@
-.comment
-  %p= comment.body + " - " + comment.user.email
+- if comment.persisted?
+  .comment
+    %p= comment.body + " - " + comment.user.email

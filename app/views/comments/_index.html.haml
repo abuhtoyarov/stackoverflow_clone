@@ -1,4 +1,0 @@
-.comments{id: "#{resource.class.name.downcase.to_s + resource.id.to_s}" }
-  - resource.comments.each do |comment|
-    - if comment.persisted?
-      = render comment
