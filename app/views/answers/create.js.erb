@@ -1,6 +1,0 @@
-<% if remotipart_submitted? %>
-  $('.answers').append("<%=  j "#{render(@answer)}" %>");
-<% else %>
-  $('.answers').append("<%=  j render(@answer) %>");
-<% end %>
-$('.answer_new').find('#answer_body').val('');

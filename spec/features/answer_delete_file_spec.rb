@@ -12,7 +12,7 @@ feature 'User can delete attachments from answer', %q{
   scenario 'Answer owner can delete attachment', js: true do
     sign_in(user)
     visit question_path(answer.question)
-    within "#answer#{answer.id}" do
+    within ".answer#answer#{answer.id}" do
       click_on 'Edit'
       click_on 'Delete'
       click_on 'Submit'

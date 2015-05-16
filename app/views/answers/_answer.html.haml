@@ -38,4 +38,6 @@
           remote: true
       - if answer.accepted?
         %p.accepted 'accepted'
+      =render 'comments/comments', resource: answer
+      =render 'comments/form', resource: answer
       %hr

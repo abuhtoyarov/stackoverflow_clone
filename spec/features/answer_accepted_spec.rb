@@ -14,7 +14,7 @@ feature 'User can accept answer', %q{
   scenario 'Authenticate user try accept answer within his question', js: true do
     sign_in(user)
     visit question_path(question)
-    within("#answer#{answer.id}") { click_on 'Accept answer' }
+    within(".answer#answer#{answer.id}") { click_on 'Accept answer' }
     sleep(1)
     within(first('.answer')) do
       expect(page).to have_content answer.body

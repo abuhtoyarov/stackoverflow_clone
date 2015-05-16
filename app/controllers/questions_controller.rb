@@ -3,7 +3,6 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:show, :index]
   before_action :find_question, except: [:index, :new, :create]
-  before_action :auth_user_vote, only: [:vote_up, :vote_down]
 
   def index
     @questions = Question.all
@@ -25,6 +24,7 @@ class QuestionsController < ApplicationController
     @question.user = current_user
 
     if @question.save
+      PrivatePub.publish_to "/questions", question: @question.to_json
       flash[:notice] = 'Your question successfully created.'
       redirect_to question_path(@question)
     else

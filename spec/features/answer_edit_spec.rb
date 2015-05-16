@@ -16,7 +16,7 @@ feature 'Authenticate user can edit answer', %q{
 
     scenario 'try edit his own answer', js: true do
       visit question_path(answer.question)
-      within "#answer#{answer.id}" do
+      within ".answer#answer#{answer.id}" do
         click_on 'Edit'
         fill_in 'Body', with: 'Edited! #{answer.body}'
         click_on 'Submit'
@@ -30,7 +30,7 @@ feature 'Authenticate user can edit answer', %q{
 
     scenario 'edit link is active after update', js: true do
       visit question_path(answer.question)
-      within "#answer#{answer.id}" do
+      within ".answer#answer#{answer.id}" do
         click_on 'Edit'
         click_on 'Submit'
         click_on 'Edit'
@@ -40,7 +40,7 @@ feature 'Authenticate user can edit answer', %q{
 
     scenario 'try edit another user answer' do
       visit question_path(another_answer.question)
-      within "#answer#{another_answer.id}" do
+      within ".answer#answer#{another_answer.id}" do
         expect(page).to_not have_link 'Edit'
       end
     end
@@ -48,7 +48,7 @@ feature 'Authenticate user can edit answer', %q{
 
   scenario 'Guest user try edit answer' do
     visit question_path(another_answer.question)
-    within "#answer#{another_answer.id}" do
+    within ".answer#answer#{another_answer.id}" do
       expect(page).to_not have_link 'Edit'
     end
   end

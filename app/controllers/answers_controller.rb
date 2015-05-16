@@ -10,12 +10,13 @@ class AnswersController < ApplicationController
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
     respond_to do |format|
-      if @answer.save
-        format.html { render @answer }
-        format.json { render @answer }
-      else
-        format.html { render @answer }
-        format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
+      format.js do
+        if @answer.save
+          PrivatePub.publish_to "/questions/#{@question.id}/answers",
+                        answer: render(template: 'answers/_answer.json.jbuilder')
+        else
+          render :error
+        end
       end
     end
   end

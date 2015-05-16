@@ -16,9 +16,9 @@ feature 'User can browse list of questions', %q{
       expect(page).to have_content(questions.first.title)
     end
 
-    scenario 'There are not questions' do
+    scenario 'There are no questions' do
       visit root_path
-      expect(page).to have_content 'There are not questions. Ask something'
+      expect(page).to have_content 'There are no questions. Ask something'
     end
   
 end

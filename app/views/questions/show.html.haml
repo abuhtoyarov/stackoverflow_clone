@@ -1,15 +1,16 @@
 .jumbotron=render 'question'
 
-.answers=render 'answers'
+.answers{ data: {question_id: @question.id } }
+  =render 'answers'
 
 .answer_new.row
-  .answers-error  
+  .answer-errors  
     -if @answer.errors.any?
       %p Your answer couldn't be submitted. Please see the errors:
       %ul
         - @answer.errors.full_messages.each do |msg|
           %li= msg
-  =form_for [@question, @answer], remote: true, data: { type: :json }, html:{role: 'form'} do |f|
+  =form_for [@question, @answer], remote: true, html:{role: 'form'} do |f|
     .form-group
       =f.label :body
       =f.text_area :body, class: 'form-control'  
@@ -19,3 +20,6 @@
     %br
 
     =f.button 'Post Your Answer', class: 'btn btn-default'
+
+=subscribe_to "/questions/#{@question.id}/answers"
+=subscribe_to "/questions/#{@question.id}/comments"

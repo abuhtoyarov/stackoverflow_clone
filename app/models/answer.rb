@@ -4,6 +4,7 @@ class Answer < ActiveRecord::Base
   scope :by_rating, -> { order(accepted: :desc) }
 
   has_many :attachments, as: :attachable
+  has_many :comments, dependent: :destroy, as: :commentable
   belongs_to :question
   belongs_to :user
 

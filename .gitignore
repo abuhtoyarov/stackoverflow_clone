@@ -21,3 +21,6 @@
 .idea/
 
 /public/uploads/attachment
+
+# private pub config
+/config/private_pub.yml

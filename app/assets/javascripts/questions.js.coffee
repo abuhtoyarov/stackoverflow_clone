@@ -10,6 +10,17 @@ ready = ->
     answer_id = $(this).data('answerId')
     $('#answer' + answer_id).find('.answer-edit-form').show()
 
+  # show form for comment
+  $('.comment-create-link').click ->
+    $(this).hide()
+    $(this).parent().find('.comment-create-form').show()
+    
+  #comet listner
+  PrivatePub.subscribe '/questions', (data, channel) ->
+    question = $.parseJSON(data['question'])
+    content = JST["templates/questions/question"]({question: question})
+    $('questions ul').append(content)
+
 vote = (e, data, status, xhr) ->
   votes = $.parseJSON(xhr.responseText)
   $('.question .votes').replaceWith(JST["templates/votes"]({votes: votes}))
