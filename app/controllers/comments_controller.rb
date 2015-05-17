@@ -1,28 +1,27 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_resource
+  after_action :pub_comments
+
+  respond_to :js
 
   def create
-    @comment = @resource.comments.build(comment_params)
-    @comment.user = current_user
-    respond_to do |format|
-      format.js do
-        if @comment.save
-          PrivatePub.publish_to(
-            "/questions/#{@resource.try(:question).try(:id) || @resource.id}/comments",
-            comment: render(template: 'comments/comment.json.jbuilder')
-          )
-        else
-          render :error
-        end
-      end
-    end
+    @comment = @resource.comments.create(comment_params.merge(user_id: current_user.id))
+    respond_with(@comment)
   end
 
   private
 
   def comment_params
     params.require(:comment).permit(:body)
+  end
+
+  def pub_comments
+    return unless @comment.valid?
+    PrivatePub.publish_to(
+      "/questions/#{@resource.try(:question).try(:id) || @resource.id}/comments",
+      comment: render_to_string(template: 'comments/comment.json.jbuilder')
+    )
   end
 
   def find_resource
