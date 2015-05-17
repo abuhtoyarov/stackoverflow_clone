@@ -5,39 +5,26 @@ class AnswersController < ApplicationController
   before_action :find_answer, except: [:create]
   before_action :find_question, only: [:create, :accept]
   before_action :user_authorized?, only: [:update, :destroy]
+  before_action :user_owner_question?, only: [:accept]
+  after_action :pub_answer, only: :create
+  respond_to :js, :json
 
   def create
-    @answer = @question.answers.build(answer_params)
-    @answer.user = current_user
-    respond_to do |format|
-      format.js do
-        if @answer.save
-          PrivatePub.publish_to "/questions/#{@question.id}/answers",
-                        answer: render(template: 'answers/_answer.json.jbuilder')
-        else
-          render :error
-        end
-      end
-    end
+    respond_with(@answer = @question.answers.create(answer_params.merge(user_id: current_user.id)))
   end
 
   def update
-    respond_to do |format|
-      if @answer.update(answer_params)
-        format.json { render @answer }
-      else
-        format.json { render json: @answer.errors.full_messages, status: :unprocessable_entity }
-      end
-    end
+    respond_with(@answer.update!(answer_params), template: 'answers/_answer.json.jbuilder')
   end
 
   def destroy
-    @answer.destroy!
+    respond_with(@answer.destroy)
   end
 
   def accept
-    @answer.accept if current_user.owner?(@question)
+    @answer.accept
     @answers = @question.answers.by_rating
+    respond_with(@answer)
   end
 
   private
@@ -54,9 +41,21 @@ class AnswersController < ApplicationController
     @answer = Answer.find(params[:id])
   end
 
+  def pub_answer
+    return unless @answer.valid?
+    PrivatePub.publish_to "/questions/#{@question.id}/answers",
+                          answer: render_to_string(template: 'answers/_answer.json.jbuilder')
+  end
+
   def user_authorized?
     return if current_user.owner?(@answer)
     flash[:error] = 'Permission denied'
+    redirect_to root_path
+  end
+
+  def user_owner_question?
+    return if current_user.owner?(@question)
+    flash[:error] = "Permission denied"
     redirect_to root_path
   end
 end
