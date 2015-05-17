@@ -5,7 +5,7 @@ RSpec.describe Question, type: :model do
   it { should validate_presence_of(:body) }
   it { should validate_presence_of(:user_id) }
   it { should validate_length_of(:title).is_at_least(15).is_at_most(255) }
-  it { should have_many(:answers).dependent(:destroy) }
+  it { should have_many(:answers).dependent(:restrict_with_error) }
   it { should belong_to(:user) }
   it { should have_many(:attachments).dependent(:destroy) }
   it { should accept_nested_attributes_for(:attachments) }

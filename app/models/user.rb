@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  has_many :questions
+  has_many :answers
 
   def owner?(obj)
     obj.try(:user_id) && obj.user_id == id

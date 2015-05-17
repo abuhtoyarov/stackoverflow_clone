@@ -16,9 +16,10 @@ feature 'User can attach file to question', %q{
     click_on 'Ask question'
   end
 
-  scenario 'Auth user attach file to question' do
+  scenario 'Auth user attach file to question', js: true do
     fill_in 'Title', with: question.title
     fill_in 'Body', with: question.body
+    click_on 'Add file'
     attach_file 'File', file
     click_on 'Create'
     expect(page).to have_link 'file.txt', href: "/uploads/attachment/file/1/file.txt"
@@ -28,11 +29,12 @@ feature 'User can attach file to question', %q{
     fill_in 'Title', with: question.title
     fill_in 'Body', with: question.body
     click_on 'Add file'
+    click_on 'Add file'
     inputs = page.all('input[type="file"]')
     inputs[0].set file
     inputs[1].set file_two
     click_on 'Create'
-    expect(page).to have_link 'file.txt', href: "/uploads/attachment/file/2/file.txt"
-    expect(page).to have_link 'file2.txt', href: "/uploads/attachment/file/3/file2.txt"
+    expect(page).to have_link 'file.txt', href: "/uploads/attachment/file/1/file.txt"
+    expect(page).to have_link 'file2.txt', href: "/uploads/attachment/file/2/file2.txt"
   end
 end

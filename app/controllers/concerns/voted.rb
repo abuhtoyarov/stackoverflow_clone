@@ -5,51 +5,35 @@ module Voted
   included do
     before_action :set_resource, only: [:vote_up, :vote_down, :unvote]
     before_action :auth_user_vote, only: [:vote_up, :vote_down]
+    before_action :build_vote, only: [:vote_up, :vote_down]
+    respond_to :json, only: [:vote_up, :vote_down, :unvote]
   end
 
   def vote_up
-    @vote = @resource.votes.build
-    respond_to do |format|
-      format.json do
-        if @vote.up(current_user)
-          render @vote
-        else
-          render json: @vote.errors.full_messages, status: :unprocessable_entity
-        end
-      end
-    end
+    respond_with(@vote.up(current_user), template: vote_template!)
   end
 
   def vote_down
-    @vote = @resource.votes.build
-    respond_to do |format|
-      format.json do
-        if @vote.down(current_user)
-          render @vote
-        else
-          render json: @vote.errors.full_messages, status: :unprocessable_entity
-        end
-      end
-    end
+    respond_with(@vote.down(current_user), template: vote_template!)
   end
 
   def unvote
     @vote = @resource.votes.find_by(user_id: current_user)
-    respond_to do |format|
-      format.json do
-        if @vote.delete
-          render @vote
-        else
-          render json: @vote.errors.full_messages, status: :unprocessable_entity
-        end
-      end
-    end
+    respond_with(@vote.delete, template: vote_template!)
   end
 
   private
 
   def set_resource
     @resource = controller_name.classify.constantize.find(params[:id])
+  end
+
+  def build_vote
+    @vote = @resource.votes.build
+  end
+
+  def vote_template!
+    'votes/_vote.json.jbuilder'
   end
 
   def auth_user_vote

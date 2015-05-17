@@ -37,7 +37,7 @@ RSpec.describe AnswersController, type: :controller do
           question_id: question,
           format: 'js'
         )
-        expect(assigns(:answer).user).to be(subject.current_user)
+        expect(assigns(:answer).user.id).to be(subject.current_user.id)
       end
     end
 

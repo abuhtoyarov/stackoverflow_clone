@@ -31,6 +31,8 @@ gem 'cocoon'
 # comet messages through websockets
 gem 'private_pub'
 gem 'thin'
+# thin controllers
+gem 'responders'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
