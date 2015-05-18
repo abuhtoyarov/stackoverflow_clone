@@ -33,6 +33,9 @@ gem 'private_pub'
 gem 'thin'
 # thin controllers
 gem 'responders'
+# oauth
+gem 'omniauth'
+gem 'omniauth-facebook'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
