@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, omniauth_providers: [:facebook]
+         :omniauthable, omniauth_providers: [:facebook, :twitter]
   has_many :questions
   has_many :answers
   has_many :authorizations
@@ -19,6 +19,8 @@ class User < ActiveRecord::Base
   def self.find_for_oauth(data)
     auth = Authorization.where(provider: data.provider, uid: data.uid.to_s).first
     return auth.user if auth
+
+    return nil unless data.info.try(:email)
 
     email = data.info[:email]
     user = User.where(email: email).first

@@ -36,6 +36,7 @@ gem 'responders'
 # oauth
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

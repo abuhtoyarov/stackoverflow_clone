@@ -122,4 +122,12 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  context 'provider has not email' do
+    let(:auth) { OmniAuth::AuthHash.new(provider: 'twitter', uid: '123456') }
+
+    it 'returns nil' do
+      expect(User.find_for_oauth(auth)).to be nil
+    end
+  end
 end
