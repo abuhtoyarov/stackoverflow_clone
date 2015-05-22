@@ -1,0 +1,11 @@
+%h2 Log in
+= form_tag confirm_email_path, method: :post do
+  .field
+    = label_tag 'auth_info_email', "Email"
+    %br/
+    = email_field 'auth[info]',  :email, autofocus: true
+  = hidden_field_tag 'auth[provider]', auth.provider
+  = hidden_field_tag 'auth[uid]', auth.uid
+  .actions
+    = submit_tag 'Submit'
+= render "devise/shared/links"
