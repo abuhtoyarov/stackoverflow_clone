@@ -1,9 +1,11 @@
 class CommentsController < ApplicationController
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
   before_action :find_resource
   after_action :pub_comments
 
   respond_to :js
+
+  authorize_resource
 
   def create
     @comment = @resource.comments.create(comment_params.merge(user_id: current_user.id))

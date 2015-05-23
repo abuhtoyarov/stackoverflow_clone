@@ -6,6 +6,7 @@ require 'rspec/rails'
 require 'shoulda/matchers'
 require 'capybara/rspec'
 require 'capybara/webkit/matchers'
+require 'cancan/matchers'
 Capybara.javascript_driver = :webkit
 # Add additional requires below this line. Rails is not loaded until this point!
 

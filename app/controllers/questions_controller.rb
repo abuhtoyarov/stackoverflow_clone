@@ -1,13 +1,15 @@
 class QuestionsController < ApplicationController
   include Voted
 
-  before_action :authenticate_user!, except: [:show, :index]
+  # before_action :authenticate_user!, except: [:show, :index]
   before_action :find_question, except: [:index, :new, :create]
   before_action :build_answer, only: :show
-  before_action :user_authorized?, only: [:update, :destroy]
+  # before_action :user_authorized?, only: [:update, :destroy]
   after_action :pub_question, only: :create
 
   respond_to :js, only: :update
+
+  authorize_resource
 
   def index
     respond_with(@questions = Question.all)

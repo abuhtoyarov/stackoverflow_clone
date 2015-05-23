@@ -4,7 +4,7 @@ module Voted
   extend ActiveSupport::Concern
   included do
     before_action :set_resource, only: [:vote_up, :vote_down, :unvote]
-    before_action :auth_user_vote, only: [:vote_up, :vote_down]
+    # before_action :auth_user_vote, only: [:vote_up, :vote_down]
     before_action :build_vote, only: [:vote_up, :vote_down]
     respond_to :json, only: [:vote_up, :vote_down, :unvote]
   end

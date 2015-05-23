@@ -1,7 +1,6 @@
 .votes
   .votes-error
-  - if current_user && !current_user.owner?(resource)
-    - if current_user.can_vote?(resource)
+    - if can?(:vote_up, resource) && can?(:vote_down, resource)
       =link_to "Vote up", polymorphic_path([:vote_up, resource]), method: :patch, remote: true, data: {type: :json}
       =link_to "Vote down", polymorphic_path([:vote_down, resource]), method: :patch, remote: true, data: {type: :json}
     - else

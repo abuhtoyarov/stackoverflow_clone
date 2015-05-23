@@ -1,13 +1,15 @@
 class AnswersController < ApplicationController
   include Voted
 
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
   before_action :find_answer, except: [:create]
   before_action :find_question, only: [:create, :accept]
-  before_action :user_authorized?, only: [:update, :destroy]
-  before_action :user_owner_question?, only: [:accept]
+  # before_action :user_authorized?, only: [:update, :destroy]
+  # before_action :user_owner_question?, only: [:accept]
   after_action :pub_answer, only: :create
   respond_to :js, :json
+
+  authorize_resource
 
   def create
     respond_with(@answer = @question.answers.create(answer_params.merge(user_id: current_user.id)))
