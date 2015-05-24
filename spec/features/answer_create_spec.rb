@@ -5,7 +5,7 @@ feature 'Authenticate user can answer to a question', %q{
   as a Authenticate user
   I want be able to create answer
   } do
-  given!(:question) { create(:question) }
+  given(:question) { create(:question) }
   given(:answer) { create(:answer) }
   given(:user) { create(:user) }
 
@@ -28,6 +28,6 @@ feature 'Authenticate user can answer to a question', %q{
     visit question_path(question)
     fill_in 'Body', with: answer.body
     click_on 'Post Your Answer'
-    within('.answers') { expect(page).to_not have_content answer.body }
+    expect(page).to_not have_content answer.body
   end
 end

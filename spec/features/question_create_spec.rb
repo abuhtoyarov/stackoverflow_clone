@@ -35,7 +35,7 @@ feature 'Authenticate user can create question', %q{
     visit '/questions'
     click_on 'Ask question'
     expect(page).to have_content(
-      'You need to sign in or sign up before continuing.'
+      'You are not authorized to access this page'
     )
   end
 end

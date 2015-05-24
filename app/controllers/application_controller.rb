@@ -10,16 +10,16 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
-      format.html { redirect_to new_user_session_path, alert: exception.message + t("sign_in") }
+      format.html { redirect_to root_path, alert: exception.message }
       format.js do
-        flash[:alert] = exception.message + t("sign_in")
-        render js: "window.location = '#{new_user_session_path}'"
+        flash[:alert] = exception.message
+        render js: "window.location = '#{root_path}'"
       end
       format.json do
-        flash[:alert] = exception.message + t("sign_in")
-        render js: "window.location = '#{new_user_session_path}'"
+        flash[:alert] = exception.message
+        render js: "window.location = '#{root_path}'"
       end
     end
   end
-  # check_authorization unless: :devise_controller?
+  check_authorization unless: :devise_controller?
 end

@@ -111,7 +111,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to root_path' do
         delete :destroy, id: another_user_question
-        expect(response).to redirect_to new_user_session_path
+        expect(response).to redirect_to root_path
       end
     end
   end

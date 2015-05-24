@@ -8,6 +8,7 @@ require 'capybara/rspec'
 require 'capybara/webkit/matchers'
 require 'cancan/matchers'
 Capybara.javascript_driver = :webkit
+OmniAuth.config.test_mode = true
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -85,5 +86,3 @@ RSpec.configure do |config|
 
   config.infer_spec_type_from_file_location!
 end
-
-OmniAuth.config.test_mode = true
