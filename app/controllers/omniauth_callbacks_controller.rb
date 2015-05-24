@@ -1,6 +1,6 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   before_action :set_auth
-  before_action :find_user_with_oauth, except: [:confirm_email]
+  before_action :find_user_with_oauth
 
   def facebook
     return if sign_in_user
@@ -13,13 +13,9 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def confirm_email
-    if valid_email?
-      find_user_with_oauth
-      return if sign_in_user
-    else
-      flash[:notice] = 'Please enter valid email to continue'
-      render 'omniauth_callbacks/confirm_email', locals: { auth: @auth }
-    end
+    return if sign_in_user
+    flash[:notice] = 'Please enter valid email to continue'
+    render 'omniauth_callbacks/confirm_email', locals: { auth: @auth }
   end
 
   private
@@ -37,9 +33,5 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       sign_in_and_redirect @user, event: :authentication
       set_flash_message(:notice, :success, kind: @auth.provider.capitalize ) if is_navigational_format?
     end
-  end
-
-  def valid_email?
-    @auth.info.email =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   end
 end
