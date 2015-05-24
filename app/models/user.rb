@@ -27,7 +27,8 @@ class User < ActiveRecord::Base
 
     unless user
       password = Devise.friendly_token[0..20]
-      user = User.create!(email: email, password: password, password_confirmation: password)
+      user = User.create(email: email, password: password, password_confirmation: password)
+      return nil unless user.save
     end
     user.authorizations.create(provider: data.provider, uid: data.uid.to_s)
     user

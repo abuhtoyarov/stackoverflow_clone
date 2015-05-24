@@ -4,7 +4,6 @@ module Voted
   extend ActiveSupport::Concern
   included do
     before_action :set_resource, only: [:vote_up, :vote_down, :unvote]
-    before_action :auth_user_vote, only: [:vote_up, :vote_down]
     before_action :build_vote, only: [:vote_up, :vote_down]
     respond_to :json, only: [:vote_up, :vote_down, :unvote]
   end
@@ -34,11 +33,5 @@ module Voted
 
   def vote_template!
     'votes/_vote.json.jbuilder'
-  end
-
-  def auth_user_vote
-    return if current_user && current_user.can_vote?(@resource)
-    flash[:error] = "You can't vote. Login or unvote first"
-    render @resource
   end
 end

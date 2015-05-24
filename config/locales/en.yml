@@ -21,3 +21,4 @@
 
 en:
   hello: "Hello world"
+  sign_in: " You need to sign in or sign up before continuing."

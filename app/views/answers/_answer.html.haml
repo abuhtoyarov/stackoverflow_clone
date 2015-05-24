@@ -7,7 +7,7 @@
           %li= link_to att.file.filename, att.file.url
       =render 'shared/votes', resource: answer
 
-      - if current_user && current_user.owner?(answer)
+      - if can?(:edit, answer)
         %p=link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
         .answer-error-edit
           -if answer.errors.any?
@@ -31,7 +31,7 @@
           answer_path(answer), 
           method: :delete, remote: true
 
-      - if current_user && current_user.owner?(@question)
+      - if can?(:accept, answer)
         %p.accept-link=link_to 'Accept answer', 
           accept_answer_path(answer),
           method: :patch,
