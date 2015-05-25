@@ -33,7 +33,7 @@ class AnswersController < ApplicationController
   end
 
   def find_question
-    @question = params.has_key?(:question_id) ? Question.find_by_id(params[:question_id]) : @answer.question
+    @question = params.has_key?(:question_id) ? Question.find_by(id: params[:question_id]) : @answer.question
   end
 
   def find_answer

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
   devise_scope :user do
     post '/confirm_email' => 'omniauth_callbacks#confirm_email'
@@ -19,6 +20,14 @@ Rails.application.routes.draw do
   resources :questions, concerns: [:votable, :commentable] do
     resources :answers, shallow: true, concerns: [:votable, :commentable] do
       patch 'accept', on: :member
+    end
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles do
+        get :me, on: :collection
+      end
     end
   end
 

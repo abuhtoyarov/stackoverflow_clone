@@ -37,8 +37,10 @@ gem 'responders'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
-
+# authtorization
 gem 'cancancan'
+# oauth provider
+gem 'doorkeeper'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -72,6 +74,7 @@ group :test do
   gem 'faker'
   gem 'capybara'
   gem 'launchy'
+  gem 'json_spec'
 end
 
 # Use ActiveModel has_secure_password
