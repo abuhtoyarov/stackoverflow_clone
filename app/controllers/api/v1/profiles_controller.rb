@@ -1,10 +1,10 @@
 class Api::V1::ProfilesController < ApplicationController
-  skip_authorization_check
   before_action :doorkeeper_authorize!
   before_action :current_resource_owner
   before_action :find_users, only: :index
-
   respond_to :json
+
+  authorize_resource class: false
 
   def me
     respond_with @current_resource_owner
@@ -17,8 +17,7 @@ class Api::V1::ProfilesController < ApplicationController
   protected
 
   def current_resource_owner
-    user = User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
-    @current_resource_owner ||= user
+    @current_resource_owner ||= User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
   end
 
   def find_users
