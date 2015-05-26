@@ -1,6 +1,7 @@
 class Api::V1::ProfilesController < ApplicationController
   before_action :doorkeeper_authorize!
   before_action :current_resource_owner
+  before_action :current_ability
   before_action :find_users, only: :index
   respond_to :json
 
@@ -22,5 +23,9 @@ class Api::V1::ProfilesController < ApplicationController
 
   def find_users
     @users = User.all_without(@current_resource_owner)
+  end
+
+  def current_ability
+    @ability ||= Ability.new(current_resource_owner)
   end
 end
